@@ -5,14 +5,14 @@ import sys.db.Manager;
 import models.*;
 
 
-class TestWS{
+class TestPPE{
     static var WSURI : String = "http://www.sio-savary.fr/fchevalier/PPECovoiturage/";
     static var eleves : Eleves;
     static var trajet : Trajet;
 
     public static function main(){
         var runner = new TestRunner();
-        runner.add(new TestArticle(WSURI));
+        runner.add(new Test(WSURI));
         setup();
         runner.run();
         tearDown();
@@ -35,8 +35,8 @@ class TestWS{
               TableCreate.create(Eleves.manager);
               TableCreate.create(Trajet.manager);
           }
-        eleves = new Eleves("Processeur Amtel", 100, 4);
-        trajet = new Trajet("Installation", 50);
+        eleves = new Eleves("1","Francois","Chevalier","test@.fr","0215475896","aaa");
+        trajet = new Trajet("1","5h10",12,Date.now(),'mardi',true,eleves);
 
         eleves.insert();
         trajet.insert();

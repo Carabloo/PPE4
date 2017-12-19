@@ -5,7 +5,7 @@ import haxe.Json;
 import models.*;
 import sys.db.Manager;
 
-class TestArticle extends TestCase{
+class Test extends TestCase{
     var wsuri : String;
 
     public function new(wsuri : String){
@@ -43,18 +43,18 @@ class TestArticle extends TestCase{
     public function test03RetrieveEleves(){
         var req = new Http(wsuri + "?/user/all");
         req.onData = function (data : String){
-            var retrieveUser : Array<GETEleves> = Json.parse(data);
-            var userDB : List<Eleves> = cast Eleves.manager.all();
-            //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());            
+            var userDB : Array<GETEleves> = Json.parse(data);
+            var retrieveUser : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
             assertEquals(userDB.length, retrieveUser.length);
-            for(i in 0...userDB.length)
+            for(i in 0...retrieveUser.length)
             {
-            assertEquals(retrieveUser[i].id, userDB[i].id); 
-            assertEquals(retrieveUser[i].nom, userDB[i].nom); 
-            assertEquals(retrieveUser[i].prenom, userDB[i].prenom); 
+            assertEquals(retrieveUser[i].idEleves, userDB[i].idEleves);
+            assertEquals(retrieveUser[i].nom, userDB[i].nom);
+            assertEquals(retrieveUser[i].prenom, userDB[i].prenom);
             }
         }
         req.onError = function(msg:String){
+        trace(msg);
         assertEquals(406,extractErrorCode(msg));
         }
         req.request(false);

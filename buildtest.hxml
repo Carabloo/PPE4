@@ -1,8 +1,8 @@
 -cp src
 -cp tests
 -lib record-macros
--main TestWS
--neko testws.n
+-main TestPPE
+-neko testPPE.n
 
 --next
--cmd neko testws.n
+-cmd neko testPPE.n
