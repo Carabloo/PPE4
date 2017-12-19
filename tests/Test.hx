@@ -58,7 +58,7 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
-        assertEquals(406,extractErrorCode(msg));
+          assertTrue(false);
         }
         req.request(false);
     }
@@ -81,7 +81,7 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
-        assertEquals(406,extractErrorCode(msg));
+          assertTrue(false);
         }
         req.request(false);
     }
