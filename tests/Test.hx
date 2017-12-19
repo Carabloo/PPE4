@@ -43,33 +43,21 @@ class Test extends TestCase{
     public function test03RetrieveUsers(){
         var req = new Http(wsuri + "?/user/all");
         req.onData = function (data : String){
-<<<<<<< HEAD:tests/Test.hx
-            var userDB : Array<GETEleves> = Json.parse(data);
-            var retrieveUser : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
-            assertEquals(userDB.length, retrieveUser.length);
-            for(i in 0...retrieveUser.length)
-            {
-            assertEquals(retrieveUser[i].idEleves, userDB[i].idEleves);
-            assertEquals(retrieveUser[i].nom, userDB[i].nom);
-            assertEquals(retrieveUser[i].prenom, userDB[i].prenom);
-=======
             var retrieveUsers : Array<GETEleves> = Json.parse(data);
-            var userDB : List<Eleves> = cast Eleves.manager.all();
-            //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());            
+            var userDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
+            //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(userDB.length, retrieveUsers.length);
             for(i in 0...userDB.length)
             {
-            assertEquals(retrieveUsers[i].idEleve, userDB[i].idEleve); 
-            assertEquals(retrieveUsers[i].nom, userDB[i].nom); 
-            assertEquals(retrieveUsers[i].prenom, userDB[i].prenom); 
-            assertEquals(retrieveUsers[i].mail, userDB[i].mail); 
-            assertEquals(retrieveUsers[i].telephone, userDB[i].telephone); 
-            assertEquals(retrieveUsers[i].mdp, userDB[i].mdp); 
->>>>>>> 9af5fef68ebaff27a3dfc25a0f6105cfa59b5324:tests/test.hx
+            assertEquals(retrieveUsers[i].idEleves, userDB[i].idEleves);
+            assertEquals(retrieveUsers[i].nom, userDB[i].nom);
+            assertEquals(retrieveUsers[i].prenom, userDB[i].prenom);
+            assertEquals(retrieveUsers[i].mail, userDB[i].mail);
+            assertEquals(retrieveUsers[i].telephone, userDB[i].telephone);
+            assertEquals(retrieveUsers[i].mdp, userDB[i].mdp);
             }
         }
         req.onError = function(msg:String){
-        trace(msg);
         assertEquals(406,extractErrorCode(msg));
         }
         req.request(false);
@@ -79,17 +67,17 @@ class Test extends TestCase{
         var req = new Http(wsuri + "?/offer/all");
         req.onData = function (data : String){
             var retrieveOffers : Array<GETTrajets> = Json.parse(data);
-            var offersDB : List<Trajets> = cast Trajets.manager.all();
-            //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());            
+            var offersDB : Array<GETTrajets> = cast Lambda.array(Trajet.manager.all());
+            //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(offersDB.length, retrieveOffers.length);
             for(i in 0...offersDB.length)
             {
-            assertEquals(retrieveOffers[i].idTrajet, offersDB[i].idTrajet); 
-            assertEquals(retrieveOffers[i].heure, offersDB[i].heure); 
-            assertEquals(retrieveOffers[i].km, offersDB[i].km); 
-            assertEquals(retrieveOffers[i].dte, offersDB[i].dte); 
-            assertEquals(retrieveOffers[i].jour, offersDB[i].jour); 
-            assertEquals(retrieveOffers[i].type, offersDB[i].type); 
+            assertEquals(retrieveOffers[i].idTrajet, offersDB[i].idTrajet);
+            assertEquals(retrieveOffers[i].heure, offersDB[i].heure);
+            assertEquals(retrieveOffers[i].km, offersDB[i].km);
+            assertEquals(retrieveOffers[i].dte, offersDB[i].dte);
+            assertEquals(retrieveOffers[i].jour, offersDB[i].jour);
+            assertEquals(retrieveOffers[i].type, offersDB[i].type);
             }
         }
         req.onError = function(msg:String){
