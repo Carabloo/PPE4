@@ -16,7 +16,11 @@ class Trajet extends Object {
     public var jour : SString<5>;
     public var type : Bool;
 
+<<<<<<< HEAD
     public function new(idTrajet : String, heure : String, km : Float, dte : Date, jour : String, type : Bool, idEleve : Eleves) {
+=======
+    function new(idTrajet : String, heure : String, km : Float, dte : Date, jour : String, type : Bool, idEleve : Eleves) {
+>>>>>>> 9af5fef68ebaff27a3dfc25a0f6105cfa59b5324
         super();
         this.idTrajet = idTrajet;
         this.heure = heure;

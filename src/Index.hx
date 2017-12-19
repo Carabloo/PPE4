@@ -19,7 +19,11 @@ class Index {
       request = r;
     }
 
+<<<<<<< HEAD:src/Index.hx
     private function doUser(?reference : String = null){
+=======
+    private function doArticles(?reference : String = null){
+>>>>>>> 9af5fef68ebaff27a3dfc25a0f6105cfa59b5324:src/index.hx
       UserController.dispatch(request, reference);
     }
 
