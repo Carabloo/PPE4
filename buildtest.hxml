@@ -1,0 +1,8 @@
+-cp src
+-cp tests
+-lib record-macros
+-main TestWS
+-neko testws.n
+
+--next
+-cmd neko testws.n

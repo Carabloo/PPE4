@@ -1,0 +1,9 @@
+-cp src
+-lib record-macros
+-lib webwrap
+-D analyzer-optimize
+-main Index
+-php export
+
+--next
+-cmd rsync -avz export/ fchevalier@www.sio-savary.fr:public_html/PPECovoiturage
