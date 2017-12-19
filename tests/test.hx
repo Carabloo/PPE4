@@ -62,4 +62,5 @@ class TestArticle extends TestCase{
         }
         req.request(false);
     }
+
 }
