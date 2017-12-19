@@ -49,9 +49,12 @@ class TestArticle extends TestCase{
             assertEquals(userDB.length, retrieveUser.length);
             for(i in 0...userDB.length)
             {
-            assertEquals(retrieveUser[i].id, userDB[i].id); 
+            assertEquals(retrieveUser[i].idEleve, userDB[i].idEleve); 
             assertEquals(retrieveUser[i].nom, userDB[i].nom); 
             assertEquals(retrieveUser[i].prenom, userDB[i].prenom); 
+            assertEquals(retrieveUser[i].mail, userDB[i].mail); 
+            assertEquals(retrieveUser[i].telephone, userDB[i].telephone); 
+            assertEquals(retrieveUser[i].mdp, userDB[i].mdp); 
             }
         }
         req.onError = function(msg:String){
