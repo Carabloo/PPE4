@@ -19,6 +19,10 @@ class Index {
       request = r;
     }
 
+    private function doArticles(?reference : String = null){
+      UserController.dispatch(request, reference);
+    }
+
     public static function dispatch(request : Request){ //point d'entrée de traitement d'une requête
         //routage
         try {

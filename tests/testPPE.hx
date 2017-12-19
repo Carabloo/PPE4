@@ -16,7 +16,6 @@ class TestWS{
         setup();
         runner.run();
         tearDown();
-
     }
 
     public static function setup(){
