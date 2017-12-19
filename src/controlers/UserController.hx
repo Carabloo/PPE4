@@ -30,7 +30,7 @@ class UserController {
   }
 
   public static function retrieveAll(request : Request){
-    var elevesInDB : List<Article> = cast Eleves.manager.all();
+    var elevesInDB : List<GETEleves> = cast Eleves.manager.all();
     request.setHeader('Content-Type','application/json');
     request.send(Json.stringify(elevesInDB));
   }
