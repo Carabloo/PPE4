@@ -11,7 +11,7 @@ class Eleves extends Object {
     public var prenom : SString<30>;
     public var mail : SString<50>;
     public var telephone : SString<10>;
-    public var mdp : Char<64>;
+    public var mdp : SString<64>;
 
     function new(id : String, nom : String, prenom : String, mail : String, telephone : String, mdp : Char) {
         super();
