@@ -28,8 +28,8 @@ class OfferController {
   }
 
   public static function retrieveAll(request : Request){
-    var elevesInDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
+    var TrajetsInDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(elevesInDB));
+    request.send(Json.stringify(TrajetsInDB));
   }
 }
