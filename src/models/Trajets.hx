@@ -5,7 +5,7 @@ import sys.db.Object;
 
 @:id(idTrajet)
 
-class Trajet extends Object {
+class Trajets extends Object {
 
     @:relation(idEleves) public var idEleve : Eleves;
 

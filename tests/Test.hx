@@ -67,7 +67,7 @@ class Test extends TestCase{
         var req = new Http(wsuri + "?/offer/all");
         req.onData = function (data : String){
             var retrieveOffers : Array<GETTrajets> = Json.parse(data);
-            var offersDB : Array<GETTrajets> = cast Lambda.array(Trajet.manager.all());
+            var offersDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
             //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(offersDB.length, retrieveOffers.length);
             for(i in 0...offersDB.length)

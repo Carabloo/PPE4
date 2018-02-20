@@ -23,6 +23,10 @@ class Index {
       UserController.dispatch(request, reference);
     }
 
+    private function doOffer(?reference : String = null){
+      OfferController.dispatch(request, reference);
+    }
+
     public static function dispatch(request : Request){ //point d'entrée de traitement d'une requête
         //routage
         try {
@@ -31,7 +35,7 @@ class Index {
 
           if (! TableCreate.exists(Eleves.manager)) {
               TableCreate.create(Eleves.manager);
-              TableCreate.create(Trajet.manager);
+              TableCreate.create(Trajets.manager);
           }
         } catch(e:Dynamic){
           request.setReturnCode(503,'Erreur DataBase ');

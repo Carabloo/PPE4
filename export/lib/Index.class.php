@@ -10,6 +10,9 @@ class Index {
 	public function doUser($reference = null) {
 		controllers_UserController::dispatch($this->request, $reference);
 	}
+	public function doOffer($reference = null) {
+		controllers_OfferController::dispatch($this->request, $reference);
+	}
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
@@ -31,7 +34,7 @@ class Index {
 			sys_db_Manager::set_cnx(php_db_PDO::open("mysql:host=localhost;dbname=covoit_afg", "sqlfchevalier", "savary", null));
 			if(!sys_db_TableCreate::exists(models_Eleves::$manager)) {
 				sys_db_TableCreate::create(models_Eleves::$manager, null);
-				sys_db_TableCreate::create(models_Trajet::$manager, null);
+				sys_db_TableCreate::create(models_Trajets::$manager, null);
 			}
 		}catch(Exception $__hx__e) {
 			$_ex_ = ($__hx__e instanceof HException) && $__hx__e->getCode() == null ? $__hx__e->e : $__hx__e;
@@ -59,4 +62,4 @@ class Index {
 	}
 	function __toString() { return 'Index'; }
 }
-Index::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("dispatchConfig" => (new _hx_array(array("oy4:userjy21:haxe.web.DispatchRule:0:1jy18:haxe.web.MatchRule:8:1jR2:3:0g")))))));
+Index::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("dispatchConfig" => (new _hx_array(array("oy4:userjy21:haxe.web.DispatchRule:0:1jy18:haxe.web.MatchRule:8:1jR2:3:0y5:offerjR1:0:1jR2:8:1jR2:3:0g")))))));

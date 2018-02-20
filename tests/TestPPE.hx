@@ -8,7 +8,7 @@ import models.*;
 class TestPPE{
     static var WSURI : String = "http://www.sio-savary.fr/fchevalier/PPECovoiturage/";
     static var eleves : Eleves;
-    static var trajet : Trajet;
+    static var trajet : Trajets;
 
     public static function main(){
         var runner = new TestRunner();
@@ -32,10 +32,10 @@ class TestPPE{
 
         if (! TableCreate.exists(Eleves.manager)) {
               TableCreate.create(Eleves.manager);
-              TableCreate.create(Trajet.manager);
+              TableCreate.create(Trajets.manager);
           }
-        eleves = new Eleves("1","Francois","Chevalier","test@.fr","0215475896","aaa");
-        trajet = new Trajet("1","5h10",12,Date.now(),'mardi',true,eleves);
+        eleves = new Eleves("1","Francois","Chevalier","test@test.fr","0215475896","aaa");
+        trajet = new Trajets("1","5h10",12,Date.now(),'mardi',true,eleves);
 
         eleves.insert();
         trajet.insert();
