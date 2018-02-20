@@ -75,7 +75,7 @@ class Test extends TestCase{
             assertEquals(retrieveOffers[i].idTrajet, offersDB[i].idTrajet);
             assertEquals(retrieveOffers[i].heure, offersDB[i].heure);
             assertEquals(retrieveOffers[i].km, offersDB[i].km);
-            assertEquals(retrieveOffers[i].dte, offersDB[i].dte);
+            assertEquals(retrieveOffers[i].date.toString(), offersDB[i].date.toString());
             assertEquals(retrieveOffers[i].jour, offersDB[i].jour);
             assertEquals(retrieveOffers[i].type, offersDB[i].type);
             }

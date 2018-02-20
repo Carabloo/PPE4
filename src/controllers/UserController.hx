@@ -19,9 +19,9 @@ class UserController {
     }else {
         switch (request.method) {
                 //case "GET" : retrieveOne (request, reference, collection);
-                //case "POST" : postArticle (request, collection);
-                //case "DELETE" : deleteArticle (request, collection , reference);
-                //case "PUT" : updateArticle (request, collection , reference);
+                //case "POST" : postUser (request, collection);
+                //case "DELETE" : deleteUser (request, collection , reference);
+                //case "PUT" : updateUser (request, collection , reference);
                 default : request.setReturnCode(501, "Not implement");
         }
     }
