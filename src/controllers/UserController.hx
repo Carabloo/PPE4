@@ -12,7 +12,7 @@ class UserController {
   public static function dispatch(request : Request, reference : String){
 
 
-    if (reference == 'all' && request.method == "GET") {
+    if (reference == "all" && request.method == "GET") {
         retrieveAll(request);
     }else if(request.method != "POST" && reference == null){
         request.setReturnCode(406, "Not Acceptable\nmissing reference");
