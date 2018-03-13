@@ -64,7 +64,7 @@ class Test extends TestCase{
     }
 
     public function test04RetrieveOffers(){
-        var req = new Http(wsuri + "?/offer/all");
+        var req = new Http(wsuri + "?/offer");
         req.onData = function (data : String){
             var retrieveOffers : Array<GETTrajets> = Json.parse(data);
             var offersDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());

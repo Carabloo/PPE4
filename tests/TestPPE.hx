@@ -35,7 +35,7 @@ class TestPPE{
               TableCreate.create(Trajets.manager);
           }
         eleves = new Eleves("1","Francois","Chevalier","test@test.fr","0215475896","aaa");
-        trajet = new Trajets("1","5h10",12,Date.now(),'mardi',true,eleves);
+        trajet = new Trajets("5h10",12,Date.now(),'mardi',true,eleves);
 
         eleves.insert();
         trajet.insert();
