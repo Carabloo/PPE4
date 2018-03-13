@@ -9,16 +9,15 @@ class Trajets extends Object {
 
     @:relation(idEleves) public var idEleve : Eleves;
 
-    public var idTrajet : SString<50>;
+    public var idTrajet : SId;
     public var heure : SString<30>;
     public var km : Float;
     public var date : Date;
     public var jour : SString<5>;
     public var type : Bool;
 
-    public function new(idTrajet : String, heure : String, km : Float, date : Date, jour : String, type : Bool, idEleve : Eleves) {
+    public function new(heure : String, km : Float, date : Date, jour : String, type : Bool, idEleve : Eleves) {
         super();
-        this.idTrajet = idTrajet;
         this.heure = heure;
         this.km=km;
         this.date=date;

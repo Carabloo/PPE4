@@ -23,7 +23,7 @@ class Index {
       UserController.dispatch(request, reference);
     }
 
-    private function doOffer(?reference : String = null){
+    private function doOffer(?reference : Int = null){
       OfferController.dispatch(request, reference);
     }
 
