@@ -19,7 +19,7 @@ class Index {
       request = r;
     }
 
-    private function doUser(?reference : String = null){
+    private function doUser(?reference : Int = null){
       UserController.dispatch(request, reference);
     }
 

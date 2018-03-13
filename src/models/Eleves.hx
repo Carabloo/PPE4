@@ -6,16 +6,15 @@ import sys.db.Object;
 
 class Eleves extends Object {
 
-    public var idEleves : SString<50>;
+    public var idEleves : SId;
     public var nom : SString<30>;
     public var prenom : SString<30>;
     public var mail : SString<50>;
     public var telephone : SString<10>;
     public var mdp : SString<64>;
 
-    public function new(id : String, nom : String, prenom : String, mail : String, telephone : String, mdp : String) {
+    public function new(nom : String, prenom : String, mail : String, telephone : String, mdp : String) {
         super();
-        this.idEleves= id;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
