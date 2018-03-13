@@ -1,4 +1,5 @@
 package api;
+import models.*;
 
 typedef GETTrajets = {
     public var idTrajet : String;
@@ -7,4 +8,5 @@ typedef GETTrajets = {
     public var date : Date;
     public var jour : String;
     public var type : Bool;
+    public var idEleve : Eleves;
 }

@@ -59,7 +59,19 @@ class OfferController {
       request.setReturnCode(400,'Bad Date');
       return;
     }
-    t = new Trajets(data.heure,data.km,data.date,data.jour,data.type,data.eleve);
+    if(data.jour == null || !Std.is(data.jour, String)){
+      request.setReturnCode(400,'Bad jour');
+      return;
+    }
+    if(data.type == null || !Std.is(data.type, Bool)){
+      request.setReturnCode(400,'Bad Date');
+      return;
+    }
+    if(data.idEleve == null || !Std.is(data.idEleve, Eleves)){
+      request.setReturnCode(400,'Bad Eleve');
+      return;
+    }
+    t = new Trajets(data.heure,data.km,data.date,data.jour,data.type,data.idEleve);
     t.insert();
     request.setHeader("Content-Type", "application/json");
     request.send("{\"reference\":" + t.idTrajet + "}");
@@ -67,8 +79,43 @@ class OfferController {
   }
 
   public static function updateArticle(request : Request, idTrajet : Int){
+    var data : PUTTrajets = request.data;
     var t : Trajets;
     t = Trajets.manager.get(idTrajet);
+    if(t == null){
+      request.setReturnCode(404,'Trajet not found');
+      return;
+    }
+    if(data.heure == null || !Std.is(data.heure, String)){
+      request.setReturnCode(400,'Bad heure');
+      return;
+    };
+    t.heure=data.heure;
+    if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
+      request.setReturnCode(400,'Bad km');
+      return;
+    }
+    t.km=data.km;
+    if(data.date == null || !Std.is(data.date, Date)){
+      request.setReturnCode(400,'Bad Date');
+      return;
+    }
+    t.date=data.date;
+    if(data.jour == null || !Std.is(data.jour, String)){
+      request.setReturnCode(400,'Bad jour');
+      return;
+    }
+    t.jour=data.jour;
+    if(data.type == null || !Std.is(data.type, Bool)){
+      request.setReturnCode(400,'Bad Date');
+      return;
+    }
+    t.type=data.type;
+    if(data.idEleve == null || !Std.is(data.idEleve, Eleves)){
+      request.setReturnCode(400,'Bad Eleve');
+      return;
+    }
+    t.idEleve=data.idEleve;
     t.update();
 
   }

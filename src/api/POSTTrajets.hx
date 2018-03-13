@@ -7,5 +7,5 @@ typedef POSTTrajets = {
   var date : Date;
   var jour : String;
   var type : Bool;
-  var eleve : Eleves;
+  var idEleve : Eleves;
 }
