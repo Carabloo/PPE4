@@ -6,7 +6,7 @@ import models.*;
 
 
 class TestPPE{
-    static var WSURI : String = "http://www.sio-savary.fr/fchevalier/PPECovoiturage/";
+    static var WSURI : String = "http://www.sio-savary.fr/covoit_afg/PPECovoiturage/";
     static var eleves : Eleves;
     static var trajet : Trajets;
 
@@ -34,7 +34,7 @@ class TestPPE{
               TableCreate.create(Eleves.manager);
               TableCreate.create(Trajets.manager);
           }
-        eleves = new Eleves("1","Francois","Chevalier","test@test.fr","0215475896","aaa");
+        eleves = new Eleves("Chevalier","François","test@test.fr","0215475896","aaa");
         trajet = new Trajets("5h10",12,Date.now(),'mardi',true,eleves);
 
         eleves.insert();

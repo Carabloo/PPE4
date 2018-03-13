@@ -41,7 +41,7 @@ class Test extends TestCase{
     }
 
     public function test03RetrieveUsers(){
-        var req = new Http(wsuri + "?/user/all");
+        var req = new Http(wsuri + "?/user");
         req.onData = function (data : String){
             var retrieveUsers : Array<GETEleves> = Json.parse(data);
             var userDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
@@ -58,6 +58,7 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
+          trace(msg);
           assertTrue(false);
         }
         req.request(false);

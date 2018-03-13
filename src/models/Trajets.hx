@@ -23,6 +23,6 @@ class Trajets extends Object {
         this.date=date;
         this.jour=jour;
         this.type=type;
-        this.idEleves=idEleves;
+        this.idEleve=idEleves;
     }
 }
