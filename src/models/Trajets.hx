@@ -9,7 +9,7 @@ class Trajets extends Object {
 
     @:relation(idEleves) public var idEleve : Eleves;
 
-    public var idTrajet : SId;
+    public var idTrajet(default, null) : SId;
     public var heure : SString<30>;
     public var km : Float;
     public var date : Date;

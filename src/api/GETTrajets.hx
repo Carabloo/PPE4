@@ -2,7 +2,7 @@ package api;
 import models.*;
 
 typedef GETTrajets = {
-    public var idTrajet : String;
+    public var idTrajet : Int;
     public var heure : String;
     public var km : Float;
     public var date : Date;

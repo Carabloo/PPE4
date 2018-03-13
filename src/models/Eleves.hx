@@ -6,7 +6,7 @@ import sys.db.Object;
 
 class Eleves extends Object {
 
-    public var idEleves : SId;
+    public var idEleves(default, null) : SId;
     public var nom : SString<30>;
     public var prenom : SString<30>;
     public var mail : SString<50>;

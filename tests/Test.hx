@@ -87,4 +87,46 @@ class Test extends TestCase{
         req.request(false);
     }
 
+    public function test05RetrieveUserByReference(){
+        var user = Eleves.manager.all().first();
+        trace(user.nom);
+        var req = new Http(wsuri + "?/user/" + user.idEleves);
+        req.onError = function(msg:String){
+            assertTrue(false);
+        }
+        req.onData = function (data : String){
+
+          var retrievedEleve : GETEleves = Json.parse(data);
+          assertEquals(retrievedEleve.idEleves, user.idEleves);
+          assertEquals(retrievedEleve.nom, user.nom);
+          assertEquals(retrievedEleve.prenom, user.prenom);
+          assertEquals(retrievedEleve.mail, user.mail);
+          assertEquals(retrievedEleve.telephone, user.telephone);
+          assertEquals(retrievedEleve.mdp, user.mdp);
+        }
+        req.request(false);
+    }
+
+    public function test06RetrieveOfferByReference(){
+        var offer = Trajets.manager.all().first();
+        trace(offer.idTrajet);
+        trace(offer.heure);
+        var req = new Http(wsuri + "?/offer/" + offer.idTrajet);
+        req.onError = function(msg:String){
+            assertTrue(false);
+        }
+        req.onData = function (data : String){
+
+          var retrievedTrajet : GETTrajets = Json.parse(data);
+          assertEquals(retrievedTrajet.idTrajet, offer.idTrajet);
+          assertEquals(retrievedTrajet.heure, offer.heure);
+          assertEquals(retrievedTrajet.km, offer.km);
+          assertEquals(retrievedTrajet.date.toString(), offer.date.toString());
+          assertEquals(retrievedTrajet.jour, offer.jour);
+          assertEquals(retrievedTrajet.type, offer.type);
+
+        }
+        req.request(false);
+    }
+
 }
