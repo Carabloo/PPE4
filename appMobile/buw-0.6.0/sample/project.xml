@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<window width="600" height="800" />
+	<meta title="UITest" package="com.sample.uitest" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="UITest" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+
+	<source path="../buw" />
+	<!--<haxelib name="buw" />-->
+
+	<assets path="Assets" rename="assets" />
+</project>
