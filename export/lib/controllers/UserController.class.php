@@ -5,7 +5,7 @@ class controllers_UserController {
 	public function __construct(){}
 	static function dispatch($request, $reference) {
 		$tmp = null;
-		if($reference === null) {
+		if($reference === "all") {
 			$tmp = $request->method === "GET";
 		} else {
 			$tmp = false;
@@ -30,7 +30,7 @@ class controllers_UserController {
 					controllers_UserController::retrieveOne($request, $reference);
 				}break;
 				case "POST":{
-					controllers_UserController::postUser($request);
+					controllers_UserController::postUser($request, $reference);
 				}break;
 				case "PUT":{
 					controllers_UserController::updateUser($request, $reference);
@@ -51,12 +51,12 @@ class controllers_UserController {
 		$request->setHeader("Content-Type", "application/json");
 		$user = models_Eleves::$manager->unsafeGet($idEleve, true);
 		if($user === null) {
-			$request->setReturnCode(404, "Eleve not found for reference " . _hx_string_rec($idEleve, ""));
+			$request->setReturnCode(404, "Eleve not found for reference " . _hx_string_or_null($idEleve));
 			return;
 		}
 		$request->send(haxe_Json::phpJsonEncode($user, null, null));
 	}
-	static function postUser($request) {
+	static function postUser($request, $idEleve) {
 		$data = $request->data;
 		$u = null;
 		$tmp = null;
@@ -112,7 +112,7 @@ class controllers_UserController {
 		$u = new models_Eleves($data->nom, $data->prenom, $data->mail, $data->telephone, $data->mdp);
 		$u->insert();
 		$request->setHeader("Content-Type", "application/json");
-		$request->send("{\"reference\":" . _hx_string_rec($u->idEleves, "") . "}");
+		$request->send("{\"idEleves\":\"" . _hx_string_or_null($u->idEleves) . "\"}");
 	}
 	static function updateUser($request, $idEleve) {
 		$data = $request->data;

@@ -10,6 +10,10 @@ class Math {
 	static function ceil($v) {
 		return (int) ceil($v);
 	}
+	static function random() {
+		$tmp = mt_rand();
+		return $tmp / mt_getrandmax();
+	}
 	static function isNaN($f) {
 		return is_nan($f);
 	}

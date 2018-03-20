@@ -5,6 +5,7 @@ class models_Eleves extends sys_db_Object {
 	public function __construct($nom, $prenom, $mail, $telephone, $mdp) {
 		if(!php_Boot::$skip_constructor) {
 		parent::__construct();
+		$this->idEleves = models_Helped::genUUID();
 		$this->nom = $nom;
 		$this->prenom = $prenom;
 		$this->mail = $mail;
@@ -35,5 +36,5 @@ class models_Eleves extends sys_db_Object {
 	static $manager;
 	function __toString() { return 'models.Eleves'; }
 }
-models_Eleves::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("rtti" => (new _hx_array(array("oy4:namey6:Elevesy7:indexesahy9:relationsahy7:hfieldsby3:nomoR0R5y6:isNullfy1:tjy17:sys.db.RecordType:9:1i30gy9:telephoneoR0R9R6fR7jR8:9:1i10gy6:prenomoR0R10R6fR7jR8:9:1i30gy8:idElevesoR0R11R6fR7jR8:0:0gy4:mailoR0R12R6fR7jR8:9:1i50gy3:mdpoR0R13R6fR7jR8:9:1i64ghy3:keyaR11hy6:fieldsar10r4r8r12r6r14hg")))))));
+models_Eleves::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("rtti" => (new _hx_array(array("oy4:namey6:Elevesy7:indexesahy9:relationsahy7:hfieldsby3:nomoR0R5y6:isNullfy1:tjy17:sys.db.RecordType:9:1i30gy9:telephoneoR0R9R6fR7jR8:9:1i10gy6:prenomoR0R10R6fR7jR8:9:1i30gy8:idElevesoR0R11R6fR7jR8:9:1i36gy4:mailoR0R12R6fR7jR8:9:1i50gy3:mdpoR0R13R6fR7jR8:9:1i64ghy3:keyaR11hy6:fieldsar10r4r8r12r6r14hg")))))));
 models_Eleves::$manager = new sys_db_Manager(_hx_qtype("models.Eleves"));

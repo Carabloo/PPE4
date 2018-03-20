@@ -62,4 +62,4 @@ class Index {
 	}
 	function __toString() { return 'Index'; }
 }
-Index::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("dispatchConfig" => (new _hx_array(array("oy4:userjy21:haxe.web.DispatchRule:0:1jy18:haxe.web.MatchRule:8:1jR2:0:0y5:offerjR1:0:1jR2:8:1jR2:0:0g")))))));
+Index::$__meta__ = _hx_anonymous(array("obj" => _hx_anonymous(array("dispatchConfig" => (new _hx_array(array("oy4:userjy21:haxe.web.DispatchRule:0:1jy18:haxe.web.MatchRule:8:1jR2:3:0y5:offerjR1:0:1jR2:8:1jR2:3:0g")))))));

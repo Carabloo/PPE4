@@ -41,7 +41,7 @@ class Test extends TestCase{
     }
 
     public function test03RetrieveUsers(){
-        var req = new Http(wsuri + "?/user");
+        var req = new Http(wsuri + "?/user/all");
         req.onData = function (data : String){
             var retrieveUsers : Array<GETEleves> = Json.parse(data);
             var userDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
@@ -58,14 +58,13 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
-          trace(msg);
           assertTrue(false);
         }
         req.request(false);
     }
 
     public function test04RetrieveOffers(){
-        var req = new Http(wsuri + "?/offer");
+        var req = new Http(wsuri + "?/offer/all");
         req.onData = function (data : String){
             var retrieveOffers : Array<GETTrajets> = Json.parse(data);
             var offersDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
@@ -89,7 +88,6 @@ class Test extends TestCase{
 
     public function test05RetrieveUserByReference(){
         var user = Eleves.manager.all().first();
-        trace(user.nom);
         var req = new Http(wsuri + "?/user/" + user.idEleves);
         req.onError = function(msg:String){
             assertTrue(false);
@@ -109,14 +107,11 @@ class Test extends TestCase{
 
     public function test06RetrieveOfferByReference(){
         var offer = Trajets.manager.all().first();
-        trace(offer.idTrajet);
-        trace(offer.heure);
         var req = new Http(wsuri + "?/offer/" + offer.idTrajet);
         req.onError = function(msg:String){
             assertTrue(false);
         }
         req.onData = function (data : String){
-
           var retrievedTrajet : GETTrajets = Json.parse(data);
           assertEquals(retrievedTrajet.idTrajet, offer.idTrajet);
           assertEquals(retrievedTrajet.heure, offer.heure);
@@ -127,6 +122,56 @@ class Test extends TestCase{
 
         }
         req.request(false);
+    }
+
+    public function test07PostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : POSTEleves = {nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.onError = function(msg:String){
+        assertTrue(false);
+
+      }
+      req.onData = function(data:String){
+        var idEleve : String = Json.parse(data).idEleves;
+        var user : Eleves = Eleves.manager.get(idEleve);
+        assertTrue(user != null);
+        assertEquals(user.idEleves,idEleve);
+        assertEquals(user.nom,postUser.nom);
+        assertEquals(user.prenom,postUser.prenom);
+        assertEquals(user.mail,postUser.mail);
+        assertEquals(user.telephone,postUser.telephone);
+        assertEquals(user.mdp,postUser.mdp);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postUser));
+      req.request(true); //POST
+    }
+
+    public function test08PostOffer(){
+      var idOffer : String = Helped.genUUID();
+      var user : Eleves = Eleves.manager.all().first();
+      var postOffer : POSTTrajets = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, idEleve:user};
+      var req = new Http(wsuri + "?/offer/" + idOffer);
+      req.onError = function(msg:String){
+        assertTrue(false);
+
+      }
+      req.onData = function(data:String){
+        var idTrajet : String = Json.parse(data).idTrajet;
+        var offer : Trajets = Trajets.manager.get(idTrajet);
+        assertTrue(offer != null);
+        assertEquals(offer.idTrajet,idTrajet);
+        assertEquals(offer.heure,postOffer.heure);
+        assertEquals(offer.km,postOffer.km);
+        assertEquals(offer.date,postOffer.date);
+        assertEquals(offer.jour,postOffer.jour);
+        assertEquals(offer.type,postOffer.type);
+        assertEquals(offer.idEleve,postOffer.idEleve);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
     }
 
 }

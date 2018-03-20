@@ -19,11 +19,11 @@ class Index {
       request = r;
     }
 
-    private function doUser(?reference : Int = null){
+    private function doUser(?reference : String = null){
       UserController.dispatch(request, reference);
     }
 
-    private function doOffer(?reference : Int = null){
+    private function doOffer(?reference : String = null){
       OfferController.dispatch(request, reference);
     }
 

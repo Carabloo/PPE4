@@ -9,17 +9,17 @@ import api.*;
 
 class OfferController {
 
-  public static function dispatch(request : Request, reference : Int){
+  public static function dispatch(request : Request, reference : String){
 
 
-    if (reference == null && request.method == "GET") {
+    if (reference == "all" && request.method == "GET") {
         retrieveAll(request);
     }else if(request.method != "POST" && reference == null){
         request.setReturnCode(406, "Not Acceptable\nmissing reference");
     }else {
         switch (request.method) {
                 case "GET" : retrieveOne (request, reference);
-                case "POST" : postArticle (request);
+                case "POST" : postArticle (request, reference);
                 case "DELETE" : deleteArticle (request, reference);
                 case "PUT" : updateArticle (request, reference);
                 default : request.setReturnCode(501, "Not implement");
@@ -28,12 +28,12 @@ class OfferController {
   }
 
   public static function retrieveAll(request : Request){
-    var TrajetsInDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
+    var trajetsInDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(TrajetsInDB));
+    request.send(Json.stringify(trajetsInDB));
   }
 
-  public static function retrieveOne(request : Request, idTrajet : Int){
+  public static function retrieveOne(request : Request, idTrajet : String){
     request.setHeader('Content-Type','application/json');
     var trajet : Trajets;
     trajet = Trajets.manager.get(idTrajet);
@@ -44,7 +44,7 @@ class OfferController {
     request.send(Json.stringify(trajet));
   }
 
-  public static function postArticle(request : Request){
+  public static function postArticle(request : Request, idTrajet : String){
     var data : POSTTrajets = request.data;
     var t : Trajets;
     if(data.heure == null || !Std.is(data.heure, String)){
@@ -67,18 +67,18 @@ class OfferController {
       request.setReturnCode(400,'Bad Date');
       return;
     }
-    if(data.idEleve == null || !Std.is(data.idEleve, Eleves)){
+    if(data.idEleve == null || !Std.is(data.idEleve, String)){
       request.setReturnCode(400,'Bad Eleve');
       return;
     }
     t = new Trajets(data.heure,data.km,data.date,data.jour,data.type,data.idEleve);
     t.insert();
     request.setHeader("Content-Type", "application/json");
-    request.send("{\"reference\":" + t.idTrajet + "}");
+    request.send("{\"idTrajet\":" + t.idTrajet + "}");
 
   }
 
-  public static function updateArticle(request : Request, idTrajet : Int){
+  public static function updateArticle(request : Request, idTrajet : String){
     var data : PUTTrajets = request.data;
     var t : Trajets;
     t = Trajets.manager.get(idTrajet);
@@ -120,7 +120,7 @@ class OfferController {
 
   }
 
-  public static function deleteArticle(request : Request, idTrajet : Int){
+  public static function deleteArticle(request : Request, idTrajet : String){
     var t : Trajets;
     t = Trajets.manager.get(idTrajet);
     if(t == null){

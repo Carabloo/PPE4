@@ -2,6 +2,7 @@ package models;
 
 import sys.db.Types;
 import sys.db.Object;
+import models.*;
 
 @:id(idTrajet)
 
@@ -9,7 +10,7 @@ class Trajets extends Object {
 
     @:relation(idEleves) public var idEleve : Eleves;
 
-    public var idTrajet(default, null) : SId;
+    public var idTrajet(default, null) : SString<36>;
     public var heure : SString<30>;
     public var km : Float;
     public var date : Date;
@@ -18,6 +19,7 @@ class Trajets extends Object {
 
     public function new(heure : String, km : Float, date : Date, jour : String, type : Bool, idEleves : Eleves) {
         super();
+        this.idTrajet = Helped.genUUID();
         this.heure = heure;
         this.km=km;
         this.date=date;

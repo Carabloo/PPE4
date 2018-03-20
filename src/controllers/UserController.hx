@@ -9,17 +9,17 @@ import api.*;
 
 class UserController {
 
-  public static function dispatch(request : Request, reference : Int){
+  public static function dispatch(request : Request, reference : String){
 
 
-    if (reference == null && request.method == "GET") {
+    if (reference == "all" && request.method == "GET") {
         retrieveAll(request);
     }else if(request.method != "POST" && reference == null){
         request.setReturnCode(406, "Not Acceptable\nmissing reference");
     }else {
         switch (request.method) {
                 case "GET" : retrieveOne (request, reference);
-                case "POST" : postUser (request);
+                case "POST" : postUser (request, reference);
                 case "DELETE" : deleteUser (request, reference);
                 case "PUT" : updateUser (request, reference);
                 default : request.setReturnCode(501, "Not implement");
@@ -33,7 +33,7 @@ class UserController {
     request.send(Json.stringify(elevesInDB));
   }
 
-  public static function retrieveOne(request : Request, idEleve : Int){
+  public static function retrieveOne(request : Request, idEleve : String){
     request.setHeader('Content-Type','application/json');
     var user : Eleves;
     user = Eleves.manager.get(idEleve);
@@ -44,7 +44,7 @@ class UserController {
     request.send(Json.stringify(user));
   }
 
-  public static function postUser(request : Request){
+  public static function postUser(request : Request, idEleve : String){
     var data : POSTEleves = request.data;
     var u : Eleves;
     if(data.nom == null || !Std.is(data.nom, String)){
@@ -70,11 +70,11 @@ class UserController {
     u = new Eleves(data.nom,data.prenom,data.mail,data.telephone,data.mdp);
     u.insert();
     request.setHeader("Content-Type", "application/json");
-    request.send("{\"reference\":" + u.idEleves + "}");
+    request.send("{\"idEleves\":\"" + u.idEleves + "\"}");
 
   }
 
-  public static function updateUser(request : Request, idEleve : Int){
+  public static function updateUser(request : Request, idEleve : String){
     var data : PUTEleves = request.data;
     var u : Eleves;
     u = Eleves.manager.get(idEleve);
@@ -111,7 +111,7 @@ class UserController {
 
   }
 
-  public static function deleteUser(request : Request, idEleve : Int){
+  public static function deleteUser(request : Request, idEleve : String){
     var u : Eleves;
     u = Eleves.manager.get(idEleve);
     if(u == null){
