@@ -36,7 +36,8 @@ class Main extends Sprite {
 		
 		main.pack(g);
 		
-		main.pack(new TextButton(onClick, "Connexion",  1));
+		main.pack(new TextButton(onClickConnexion, "Connexion",  1));
+		main.pack(new TextButton(onClickEleves, "Afficher les élèves",  1));
 		
 		l = new ListView(afficherEleves);
 		main.pack(l);
@@ -44,25 +45,15 @@ class Main extends Sprite {
 		Screen.display(main);		
 	}
 	
-	function onClick(w : Control) {
-		var r = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user");
+	function onClickConnexion(w : Control) {
+		//
+	}
+
+	function onClickEleves(w : Control) {
+		var r = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
 		
 		r.onData = function(data : String) {
-			
-	/*		var g : Grid = new Grid([240, 80]);
-			g.pack(new Title("Libelle"));
-			g.pack(new Title("Prix")); 
-	*/
-	
 			var eleves : Array<Eleves> = Json.parse(data);
-			
-	/*		trace(data);
-			for(a in articles) {
-				g.pack(new Label(a.libelle));
-				g.pack(new Label(Std.string(a.prix)));
-			}
-			main.pack(g);  
-	*/
 			l.source = eleves;
 	    } 
 	    r.request();

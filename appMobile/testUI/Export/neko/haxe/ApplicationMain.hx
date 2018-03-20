@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "35",
+			build: "37",
 			company: "Company Name",
 			file: "TestUI",
 			fps: 30,
