@@ -1,0 +1,16 @@
+BUW - Basic and Usefull Widgets for OpenFL
+	
+Copyright Frank Endres / Éducation Nationale, 2012-2018
+Released under the Cecill-C licence
+
+Tested with OpenFL 7.1.2 on neko & android + html5
+Changes (2018-03-16):
++ added list view and table widget
++ added scrolling
++ size are now relative (responsive design)
+~ many fixes and API changes
+
+TODO:
+- add menu, radio boxes and combo boxes widgets
+- add long click / touch support on list view items (selection)
+
