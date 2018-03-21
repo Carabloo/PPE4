@@ -27,26 +27,26 @@ class OfferController {
   }
 
   public static function retrieveAll(request : Request){
-    var trajetsInDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
+    var offerInDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(trajetsInDB));
+    request.send(Json.stringify(offerInDB));
   }
 
-  public static function retrieveOne(request : Request, idTrajet : String){
+  public static function retrieveOne(request : Request, idOffer : String){
     request.setHeader('Content-Type','application/json');
-    var trajet : Trajets;
-    trajet = Trajets.manager.get(idTrajet);
+    var trajet : Offer;
+    trajet = Offer.manager.get(idOffer);
     if(trajet == null){
-      request.setReturnCode(404, 'Trajet not found for reference ' + idTrajet);
+      request.setReturnCode(404, 'Offer not found for ifOffer ' + idOffer);
       return;
     }
     request.send(Json.stringify(trajet));
   }
 
-  public static function postArticle(request : Request, idTrajet : String){
-    var data : POSTTrajets = request.data;
-    var t : Trajets;
-    var user : Eleves;
+  public static function postArticle(request : Request, idOffer : String){
+    var data : POSTOffer = request.data;
+    var t : Offer;
+    var user : User;
     if(data.heure == null || !Std.is(data.heure, String)){
       request.setReturnCode(400,'Bad heure');
       return;
@@ -67,23 +67,22 @@ class OfferController {
       request.setReturnCode(400,'Bad Date');
       return;
     }
-    if(data.idEleve == null || !Std.is(data.idEleve, String)){
+    if(data.user == null || !Std.is(data.user, User)){
       request.setReturnCode(400,'Bad Eleve');
       return;
     }
-    user = data.idEleve;
-    t = new Trajets(data.heure,data.km,data.date,data.jour,data.type,user,idTrajet);
+    t = new Offer(data.heure,data.km,data.date,data.jour,data.type,data.user,idOffer);
     t.insert();
     request.setHeader("Content-Type", "application/json");
-    request.send("{\"idTrajet\":" + t.idTrajet + "}");
+    request.send("{\"idOffer\":" + t.idOffer + "}");
 
   }
 
-  public static function deleteArticle(request : Request, idTrajet : String){
-    var t : Trajets;
-    t = Trajets.manager.get(idTrajet);
+  public static function deleteArticle(request : Request, idOffer : String){
+    var t : Offer;
+    t = Offer.manager.get(idOffer);
     if(t == null){
-      request.setReturnCode(404,'Trajet not found');
+      request.setReturnCode(404,'Offer not found');
       return;
     }
     t.delete();

@@ -28,7 +28,7 @@ class Index {
     }
 
     private function doAuth(){
-      AuthController.dispath(request);
+      AuthController.dispatch(request);
     }
 
     public static function dispatch(request : Request){ //point d'entrée de traitement d'une requête
@@ -37,9 +37,9 @@ class Index {
           Manager.initialize();
           Manager.cnx = PDO.open("mysql:host=localhost;dbname=covoit_afg", "sqlfchevalier", "savary");
 
-          if (! TableCreate.exists(Eleves.manager)) {
-              TableCreate.create(Eleves.manager);
-              TableCreate.create(Trajets.manager);
+          if (! TableCreate.exists(User.manager)) {
+              TableCreate.create(User.manager);
+              TableCreate.create(Offer.manager);
           }
         } catch(e:Dynamic){
           request.setReturnCode(503,'Erreur DataBase ');

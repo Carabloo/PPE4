@@ -4,6 +4,7 @@ import api.*;
 import haxe.Json;
 import models.*;
 import sys.db.Manager;
+import haxe.io.BytesOutput;
 
 class Test extends TestCase{
     var wsuri : String;
@@ -43,13 +44,14 @@ class Test extends TestCase{
     public function test03RetrieveUsers(){
         var req = new Http(wsuri + "?/user/all");
         req.onData = function (data : String){
-            var retrieveUsers : Array<GETEleves> = Json.parse(data);
-            var userDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
+            var retrieveUsers : Array<GETUser> = Json.parse(data);
+            var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
             //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(userDB.length, retrieveUsers.length);
             for(i in 0...userDB.length)
             {
-            assertEquals(retrieveUsers[i].idEleves, userDB[i].idEleves);
+            assertEquals(retrieveUsers[i].idUser, userDB[i].idUser);
+            assertEquals(retrieveUsers[i].login, userDB[i].login);
             assertEquals(retrieveUsers[i].nom, userDB[i].nom);
             assertEquals(retrieveUsers[i].prenom, userDB[i].prenom);
             assertEquals(retrieveUsers[i].mail, userDB[i].mail);
@@ -66,13 +68,13 @@ class Test extends TestCase{
     public function test04RetrieveOffers(){
         var req = new Http(wsuri + "?/offer/all");
         req.onData = function (data : String){
-            var retrieveOffers : Array<GETTrajets> = Json.parse(data);
-            var offersDB : Array<GETTrajets> = cast Lambda.array(Trajets.manager.all());
+            var retrieveOffers : Array<GETOffer> = Json.parse(data);
+            var offersDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
             //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(offersDB.length, retrieveOffers.length);
             for(i in 0...offersDB.length)
             {
-            assertEquals(retrieveOffers[i].idTrajet, offersDB[i].idTrajet);
+            assertEquals(retrieveOffers[i].idOffer, offersDB[i].idOffer);
             assertEquals(retrieveOffers[i].heure, offersDB[i].heure);
             assertEquals(retrieveOffers[i].km, offersDB[i].km);
             assertEquals(retrieveOffers[i].date.toString(), offersDB[i].date.toString());
@@ -87,38 +89,39 @@ class Test extends TestCase{
     }
 
     public function test05RetrieveUserByReference(){
-        var user = Eleves.manager.all().first();
-        var req = new Http(wsuri + "?/user/" + user.idEleves);
+        var user = User.manager.all().first();
+        var req = new Http(wsuri + "?/user/" + user.idUser);
         req.onError = function(msg:String){
             assertTrue(false);
         }
         req.onData = function (data : String){
 
-          var retrievedEleve : GETEleves = Json.parse(data);
-          assertEquals(retrievedEleve.idEleves, user.idEleves);
-          assertEquals(retrievedEleve.nom, user.nom);
-          assertEquals(retrievedEleve.prenom, user.prenom);
-          assertEquals(retrievedEleve.mail, user.mail);
-          assertEquals(retrievedEleve.telephone, user.telephone);
-          assertEquals(retrievedEleve.mdp, user.mdp);
+          var retrievedUser : GETUser = Json.parse(data);
+          assertEquals(retrievedUser.idUser, user.idUser);
+          assertEquals(retrievedUser.login, user.login);
+          assertEquals(retrievedUser.nom, user.nom);
+          assertEquals(retrievedUser.prenom, user.prenom);
+          assertEquals(retrievedUser.mail, user.mail);
+          assertEquals(retrievedUser.telephone, user.telephone);
+          assertEquals(retrievedUser.mdp, user.mdp);
         }
         req.request(false);
     }
 
     public function test06RetrieveOfferByReference(){
-        var offer = Trajets.manager.all().first();
-        var req = new Http(wsuri + "?/offer/" + offer.idTrajet);
+        var offer = Offer.manager.all().first();
+        var req = new Http(wsuri + "?/offer/" + offer.idOffer);
         req.onError = function(msg:String){
             assertTrue(false);
         }
         req.onData = function (data : String){
-          var retrievedTrajet : GETTrajets = Json.parse(data);
-          assertEquals(retrievedTrajet.idTrajet, offer.idTrajet);
-          assertEquals(retrievedTrajet.heure, offer.heure);
-          assertEquals(retrievedTrajet.km, offer.km);
-          assertEquals(retrievedTrajet.date.toString(), offer.date.toString());
-          assertEquals(retrievedTrajet.jour, offer.jour);
-          assertEquals(retrievedTrajet.type, offer.type);
+          var retrievedOffer : GETOffer = Json.parse(data);
+          assertEquals(retrievedOffer.idOffer, offer.idOffer);
+          assertEquals(retrievedOffer.heure, offer.heure);
+          assertEquals(retrievedOffer.km, offer.km);
+          assertEquals(retrievedOffer.date.toString(), offer.date.toString());
+          assertEquals(retrievedOffer.jour, offer.jour);
+          assertEquals(retrievedOffer.type, offer.type);
 
         }
         req.request(false);
@@ -126,17 +129,18 @@ class Test extends TestCase{
 
     public function test07PostUser(){
       var idUser : String = Helped.genUUID();
-      var postUser : POSTEleves = {nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
+      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
       var req = new Http(wsuri + "?/user/" + idUser);
       req.onError = function(msg:String){
         assertTrue(false);
 
       }
       req.onData = function(data:String){
-        var idEleve : String = Json.parse(data).idEleves;
-        var user : Eleves = Eleves.manager.get(idEleve);
+        var idUser : String = Json.parse(data).idUser;
+        var user : User = User.manager.get(idUser);
         assertTrue(user != null);
-        assertEquals(user.idEleves,idEleve);
+        assertEquals(user.idUser,idUser);
+        assertEquals(user.login,postUser.login);
         assertEquals(user.nom,postUser.nom);
         assertEquals(user.prenom,postUser.prenom);
         assertEquals(user.mail,postUser.mail);
@@ -150,28 +154,123 @@ class Test extends TestCase{
 
     public function test08PostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : Eleves = Eleves.manager.all().first();
-      var postOffer : POSTTrajets = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, idEleve:user};
+      var user : User = User.manager.all().first();
+      var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, user:user};
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.onError = function(msg:String){
         assertTrue(false);
 
       }
       req.onData = function(data:String){
-        var idTrajet : String = Json.parse(data).idTrajet;
-        var offer : Trajets = Trajets.manager.get(idTrajet);
+        var idOffer : String = Json.parse(data).idOffer;
+        var offer : Offer = Offer.manager.get(idOffer);
         assertTrue(offer != null);
-        assertEquals(offer.idTrajet,idTrajet);
+        assertEquals(offer.idOffer,idOffer);
         assertEquals(offer.heure,postOffer.heure);
         assertEquals(offer.km,postOffer.km);
         assertEquals(offer.date,postOffer.date);
         assertEquals(offer.jour,postOffer.jour);
         assertEquals(offer.type,postOffer.type);
-        assertEquals(offer.idEleve,postOffer.idEleve);
       }
       req.setHeader("Content-Type", "application/json");
       req.setPostData(Json.stringify(postOffer));
       req.request(true); //POST
+    }
+
+    public function test09PutUser(){
+      var user = User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"aaaa"};
+
+      var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
+
+      req.onError = function (msg : String) {
+          assertTrue(false);
+      }
+      //avec customRequest, req.onData ne fonctionne pas;
+      //utiliser onStatus et récupérer les données éventuelles à partir de l'objet BytesOutput
+      req.onStatus = function (status : Int) {
+        assertEquals(200,status);
+        Manager.cleanup(); //pour vider le cache des requêtes SQL
+        user = User.manager.get(refUser);
+        assertEquals(newUser.login, user.login);
+        assertEquals(newUser.nom, user.nom);
+        assertEquals(newUser.prenom, user.prenom);
+        assertEquals(newUser.mail, user.mail);
+        assertEquals(newUser.telephone, user.telephone);
+        assertEquals(newUser.mdp, user.mdp);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test11DeleteUser(){
+      var user : User;
+      var user = User.manager.all().last();
+      var refUser = user.idUser;
+      var req = new Http(wsuri + "?/user/" + Std.string(refUser));
+      req.onError = function (msg : String) {
+        assertTrue(false);
+      }
+      req.onStatus = function (status : Int) {
+        assertEquals(200,status);
+        Manager.cleanup(); //pour vider le cache des requêtes SQL
+        user = User.manager.all().last();
+        var newRefUser = user.idUser;
+        if(refUser != newRefUser){
+          assertTrue(true);
+        } else {
+          assertTrue(false);
+        }
+      }
+      req.customRequest(false, new BytesOutput(), "DELETE");
+    }
+
+    public function test12DeleteOffer(){
+      var offer : Offer;
+      var offer = Offer.manager.all().last();
+      var refOffer = offer.idOffer;
+      var req = new Http(wsuri + "?/user/" + Std.string(refOffer));
+      req.onError = function (msg : String) {
+        assertTrue(false);
+      }
+      req.onStatus = function (status : Int) {
+        assertEquals(200,status);
+        Manager.cleanup(); //pour vider le cache des requêtes SQL
+        offer = Offer.manager.all().last();
+        var newRefOffer = offer.idOffer;
+        if(refOffer != newRefOffer){
+          assertTrue(true);
+        } else {
+          assertTrue(false);
+        }
+      }
+      req.customRequest(false, new BytesOutput(), "DELETE");
+    }
+
+    public function test13Auth(){
+      var req = new Http(wsuri + "?/auth/");
+      eq.onData = function (data : String){
+          var retrieveUsers : Array<GETUser> = Json.parse(data);
+          var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
+          //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
+          assertEquals(userDB.length, retrieveUsers.length);
+          for(i in 0...userDB.length)
+          {
+          assertEquals(retrieveUsers[i].idUser, userDB[i].idUser);
+          assertEquals(retrieveUsers[i].login, userDB[i].login);
+          assertEquals(retrieveUsers[i].nom, userDB[i].nom);
+          assertEquals(retrieveUsers[i].prenom, userDB[i].prenom);
+          assertEquals(retrieveUsers[i].mail, userDB[i].mail);
+          assertEquals(retrieveUsers[i].telephone, userDB[i].telephone);
+          assertEquals(retrieveUsers[i].mdp, userDB[i].mdp);
+          }
+      }
+      req.onError = function (msg : String) {
+        assertTrue(false);
+      }
+      req.request(false);
     }
 
 }

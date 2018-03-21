@@ -20,8 +20,8 @@ class AuthController {
   }
 
   public static function connection(request : Request){
-    var elevesInDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
+    var userInDB : Array<GETUser> = cast Lambda.array(User.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(elevesInDB));
+    request.send(Json.stringify(userInDB));
   }
 }

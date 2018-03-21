@@ -7,8 +7,8 @@ import models.*;
 
 class TestPPE{
     static var WSURI : String = "http://www.sio-savary.fr/covoit_afg/PPECovoiturage/";
-    static var user : Eleves;
-    static var offer : Trajets;
+    static var user : User;
+    static var offer : Offer;
 
     public static function main(){
         var runner = new TestRunner();
@@ -31,12 +31,12 @@ class TestPPE{
             database : "covoit_afg"
         });
 
-        if (! TableCreate.exists(Eleves.manager)) {
-              TableCreate.create(Eleves.manager);
-              TableCreate.create(Trajets.manager);
+        if (! TableCreate.exists(User.manager)) {
+              TableCreate.create(User.manager);
+              TableCreate.create(Offer.manager);
           }
-        user = new Eleves("François", "Chevalier", "test@mail.fr", "0629352663", "aaaa");
-        offer = new Trajets("4h20", 50, Date.now(), "mardi", true, user);
+        user = new User("fchevalier","François", "Chevalier", "test@mail.fr", "0629352663", "aaaa");
+        offer = new Offer("4h20", 50, Date.now(), "mardi", true, user);
 
         user.insert();
         offer.insert();

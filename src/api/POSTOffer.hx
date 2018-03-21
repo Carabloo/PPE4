@@ -1,12 +1,12 @@
 package api;
 import models.*;
 
-typedef GETTrajets = {
-    public var idTrajet : String;
+typedef POSTOffer = {
+    @:optional var idOffer : String;
     public var heure : String;
     public var km : Float;
     public var date : Date;
     public var jour : String;
     public var type : Bool;
-    public var idEleve : Eleves;
+    public var user : User;
 }

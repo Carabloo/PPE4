@@ -28,25 +28,29 @@ class UserController {
   }
 
   public static function retrieveAll(request : Request){
-    var elevesInDB : Array<GETEleves> = cast Lambda.array(Eleves.manager.all());
+    var userInDB : Array<GETUser> = cast Lambda.array(User.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(elevesInDB));
+    request.send(Json.stringify(userInDB));
   }
 
-  public static function retrieveOne(request : Request, idEleve : String){
+  public static function retrieveOne(request : Request, idUser : String){
     request.setHeader('Content-Type','application/json');
-    var user : Eleves;
-    user = Eleves.manager.get(idEleve);
+    var user : User;
+    user = User.manager.get(idUser);
     if(user == null){
-      request.setReturnCode(404, 'Eleve not found for reference ' + idEleve);
+      request.setReturnCode(404, 'User not found for idUser ' + idUser);
       return;
     }
     request.send(Json.stringify(user));
   }
 
-  public static function postUser(request : Request, idEleve : String){
-    var data : POSTEleves = request.data;
-    var u : Eleves;
+  public static function postUser(request : Request, idUser : String){
+    var data : POSTUser = request.data;
+    var u : User;
+    if(data.login == null || !Std.is(data.login, String)){
+      request.setReturnCode(400,'Bad login');
+      return;
+    };
     if(data.nom == null || !Std.is(data.nom, String)){
       request.setReturnCode(400,'Bad nom');
       return;
@@ -67,21 +71,25 @@ class UserController {
       request.setReturnCode(400,'Bad mdp');
       return;
     }
-    u = new Eleves(data.nom,data.prenom,data.mail,data.telephone,data.mdp,idEleve);
+    u = new User(data.login,data.nom,data.prenom,data.mail,data.telephone,data.mdp,idUser);
     u.insert();
     request.setHeader("Content-Type", "application/json");
-    request.send("{\"idEleves\":\"" + u.idEleves + "\"}");
+    request.send("{\"idUser\":\"" + u.idUser + "\"}");
 
   }
 
-  public static function updateUser(request : Request, idEleve : String){
-    var data : PUTEleves = request.data;
-    var u : Eleves;
-    u = Eleves.manager.get(idEleve);
+  public static function updateUser(request : Request, idUser : String){
+    var data : PUTUser = request.data;
+    var u : User;
+    u = User.manager.get(idUser);
     if(u == null){
       request.setReturnCode(404,'Eleve not found');
       return;
     }
+    if(data.login == null || !Std.is(data.login, String)){
+      request.setReturnCode(400,'Bad login');
+      return;
+    };
     if(data.nom == null || !Std.is(data.nom, String)){
       request.setReturnCode(400,'Bad nom');
       return;
@@ -111,9 +119,9 @@ class UserController {
 
   }
 
-  public static function deleteUser(request : Request, idEleve : String){
-    var u : Eleves;
-    u = Eleves.manager.get(idEleve);
+  public static function deleteUser(request : Request, idUser : String){
+    var u : User;
+    u = User.manager.get(idUser);
     if(u == null){
       request.setReturnCode(404,'Eleve not found');
       return;
