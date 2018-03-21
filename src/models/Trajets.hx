@@ -17,14 +17,18 @@ class Trajets extends Object {
     public var jour : SString<5>;
     public var type : Bool;
 
-    public function new(heure : String, km : Float, date : Date, jour : String, type : Bool, idEleves : Eleves) {
+    public function new(heure : String, km : Float, date : Date, jour : String, type : Bool, idEleves : Eleves, ?id : String = null) {
         super();
-        this.idTrajet = Helped.genUUID();
         this.heure = heure;
         this.km=km;
         this.date=date;
         this.jour=jour;
         this.type=type;
         this.idEleve=idEleves;
+        if( id == null ) {
+          this.idTrajet = Helped.genUUID();
+        } else {
+          this.idTrajet = id;
+        }
     }
 }

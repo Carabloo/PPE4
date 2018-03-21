@@ -14,13 +14,17 @@ class Eleves extends Object {
     public var telephone : SString<10>;
     public var mdp : SString<64>;
 
-    public function new(nom : String, prenom : String, mail : String, telephone : String, mdp : String) {
+    public function new(nom : String, prenom : String, mail : String, telephone : String, mdp : String, ?id : String = null) {
         super();
-        this.idEleves = Helped.genUUID();
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.telephone = telephone;
         this.mdp = mdp;
+        if( id == null ) {
+          this.idEleves = Helped.genUUID();
+        } else {
+          this.idEleves = id;
+        }
     }
 }

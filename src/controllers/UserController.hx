@@ -67,7 +67,7 @@ class UserController {
       request.setReturnCode(400,'Bad mdp');
       return;
     }
-    u = new Eleves(data.nom,data.prenom,data.mail,data.telephone,data.mdp);
+    u = new Eleves(data.nom,data.prenom,data.mail,data.telephone,data.mdp,idEleve);
     u.insert();
     request.setHeader("Content-Type", "application/json");
     request.send("{\"idEleves\":\"" + u.idEleves + "\"}");

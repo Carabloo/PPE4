@@ -109,7 +109,7 @@ class controllers_UserController {
 			$request->setReturnCode(400, "Bad mdp");
 			return;
 		}
-		$u = new models_Eleves($data->nom, $data->prenom, $data->mail, $data->telephone, $data->mdp);
+		$u = new models_Eleves($data->nom, $data->prenom, $data->mail, $data->telephone, $data->mdp, $idEleve);
 		$u->insert();
 		$request->setHeader("Content-Type", "application/json");
 		$request->send("{\"idEleves\":\"" . _hx_string_or_null($u->idEleves) . "\"}");

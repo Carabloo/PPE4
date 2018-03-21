@@ -27,6 +27,10 @@ class Index {
       OfferController.dispatch(request, reference);
     }
 
+    private function doAuth(){
+      AuthController.dispath(request);
+    }
+
     public static function dispatch(request : Request){ //point d'entrée de traitement d'une requête
         //routage
         try {
