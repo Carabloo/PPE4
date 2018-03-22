@@ -251,7 +251,7 @@ class Test extends TestCase{
 
     public function test13Auth(){
       var req = new Http(wsuri + "?/auth/");
-      eq.onData = function (data : String){
+      req.onData = function (data : String){
           var retrieveUsers : Array<GETUser> = Json.parse(data);
           var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
           //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
