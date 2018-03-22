@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<window heigh="480" width="320" />
+	<meta title="TestUI" package="com.sample.testui" version="1.0.0" company="Company Name" />
+	<app main="Main" path="../export/mobile" file="TestUI" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	
+	<assets path="Assets" rename="assets" />
+	
+</project>
