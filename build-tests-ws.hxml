@@ -1,0 +1,8 @@
+-cp src-ws
+-cp src-tests-ws
+-lib record-macros
+-main TestPPE
+-neko export/tests-ws.n
+
+--next
+-cmd neko export/tests-ws.n

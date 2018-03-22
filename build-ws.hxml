@@ -1,0 +1,9 @@
+-cp src-ws
+-lib record-macros
+-lib webwrap
+-D analyzer-optimize
+-main Index
+-php export/ws
+
+--next
+-cmd rsync -avz export/ws/ www.sio-savary.fr:/home/covoit_afg/public_html/PPECovoiturage

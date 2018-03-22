@@ -1,8 +1,0 @@
--cp src
--cp tests
--lib record-macros
--main TestPPE
--neko test.n
-
---next
--cmd neko test.n

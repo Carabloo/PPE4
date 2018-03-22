@@ -1,9 +1,0 @@
--cp src
--lib record-macros
--lib webwrap
--D analyzer-optimize
--main Index
--php export
-
---next
--cmd rsync -avz export/ fchevalier@www.sio-savary.fr:../covoit_afg/public_html/PPECovoiturage

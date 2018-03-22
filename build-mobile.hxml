@@ -1,0 +1,5 @@
+-lib openfl
+-cp src-mobile/Source
+-cp src-ws
+-main Main
+-cmd ( cd src-mobile; haxelib run openfl test neko; )
