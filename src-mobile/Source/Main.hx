@@ -4,20 +4,22 @@ import buw.*;
 import haxe.Http;
 import haxe.Json;
 
-typedef Eleves = {
-	var idEleves : String;
-	var nom : String;
-	var prenom : String;
-	var mail : String;
-	var telephone : String;
-	var mdp : String;
+typedef Users = {
+  public var idUser : String;
+  public var login : String;
+  public var nom : String;
+  public var prenom : String;
+  public var mail : String;
+  public var telephone : String;
+  public var mdp : String;
+
 }
 
 class Main extends Sprite {
 	var main : VBox;
 	var identifiant : Input;
 	var motdepasse : Input;
-	var l : ListView<Eleves>;
+	var l : ListView<Users>;
 	
 	public function new () {
 		
@@ -37,9 +39,9 @@ class Main extends Sprite {
 		main.pack(g);
 		
 		main.pack(new TextButton(onClickConnexion, "Connexion",  1));
-		main.pack(new TextButton(onClickEleves, "Afficher les élèves",  1));
+		main.pack(new TextButton(onClickUsers, "Afficher les élèves",  1));
 		
-		l = new ListView(afficherEleves);
+		l = new ListView(afficherUsers);
 		main.pack(l);
 		
 		Screen.display(main);		
@@ -49,17 +51,17 @@ class Main extends Sprite {
 		//
 	}
 
-	function onClickEleves(w : Control) {
+	function onClickUsers(w : Control) {
 		var r = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
 		
 		r.onData = function(data : String) {
-			var eleves : Array<Eleves> = Json.parse(data);
-			l.source = eleves;
+			var users : Array<Users> = Json.parse(data);
+			l.source = users;
 	    } 
 	    r.request();
 	}
 	
-	function afficherEleves(e : Eleves) : Widget {
+	function afficherUsers(e : Users) : Widget {
 		return new Label(e.nom + " " + e.prenom);
 	}
 }
