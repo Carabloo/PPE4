@@ -1,9 +1,9 @@
 -main ApplicationMain 
 --macro openfl._internal.utils.ExtraParams.include()
--cp /home/aguichard/haxelibs/openfl/7,1,2/src
+-cp /home/francois/haxelib/openfl/7,1,2/src
 -D openfl=7.1.2
 --macro lime.Lib.extraParams()
--cp /home/aguichard/haxelibs/lime/6,2,0
+-cp /home/francois/haxelib/lime/6,2,0
 -D lime=6.2.0
 -cp Source
 -D lime-openal
