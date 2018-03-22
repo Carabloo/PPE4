@@ -187,11 +187,9 @@ class Test extends TestCase{
       req.onError = function (msg : String) {
           assertTrue(false);
       }
-      //avec customRequest, req.onData ne fonctionne pas;
-      //utiliser onStatus et récupérer les données éventuelles à partir de l'objet BytesOutput
       req.onStatus = function (status : Int) {
         assertEquals(200,status);
-        Manager.cleanup(); //pour vider le cache des requêtes SQL
+        Manager.cleanup();
         user = User.manager.get(refUser);
         assertEquals(newUser.login, user.login);
         assertEquals(newUser.nom, user.nom);
