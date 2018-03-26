@@ -28,10 +28,9 @@ class Helped {
     var cookies : StringMap<String> = request.cookies;
     var login = cookies.get("login");
     var mdp = cookies.get("mdp");
-    var mdpSha256 : String = Sha256.encode(mdp);
     var users : Array<User> = cast Lambda.array(User.manager.all());
     for( u in users ) {
-      if( u.login == login && mdpSha256 == u.mdp) {
+      if( u.login == login && mdp == u.mdp) {
         return u;
       }
     }
