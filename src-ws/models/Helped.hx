@@ -6,7 +6,6 @@ import sys.db.Manager;
 import models.*;
 import haxe.Json;
 import api.*;
-import haxe.crypto.Sha256;
 import haxe.ds.StringMap;
 
 class Helped {
