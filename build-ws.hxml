@@ -6,4 +6,4 @@
 -php export/ws
 
 --next
--cmd rsync -avz export/ws/ www.sio-savary.fr:/home/covoit_afg/public_html/PPECovoiturage
+-cmd rsync -avz export/ws/ fchevalier@www.sio-savary.fr:/home/covoit_afg/public_html/PPECovoiturage

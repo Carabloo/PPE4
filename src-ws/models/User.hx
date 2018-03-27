@@ -2,6 +2,7 @@ package models;
 import sys.db.Types;
 import sys.db.Object;
 import models.*;
+import haxe.crypto.Sha256;
 
 @:id(idUser)
 
@@ -22,7 +23,7 @@ class User extends Object {
         this.prenom = prenom;
         this.mail = mail;
         this.telephone = telephone;
-        this.mdp = mdp;
+        this.mdp = Sha256.encode(mdp);
         if( id == null ) {
           this.idUser = Helped.genUUID();
         } else {

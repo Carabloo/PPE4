@@ -6,6 +6,8 @@ import sys.db.Manager;
 import models.*;
 import haxe.Json;
 import api.*;
+import haxe.crypto.Sha256;
+import haxe.ds.StringMap;
 
 class AuthController {
 
@@ -20,8 +22,8 @@ class AuthController {
   }
 
   public static function connection(request : Request){
-    var userInDB : Array<GETUser> = cast Lambda.array(User.manager.all());
+    
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(userInDB));
+    request.send(Json.stringify('cool'));
   }
 }
