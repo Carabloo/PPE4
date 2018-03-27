@@ -2,12 +2,10 @@ package models;
 import sys.db.Types;
 import sys.db.Object;
 import models.*;
-import haxe.crypto.Sha256;
 
 @:id(idUser)
 
 class User extends Object {
-
     public var idUser(default, null) : SString<36>;
     public var login : SString<30>;
     public var nom : SString<30>;
@@ -23,7 +21,7 @@ class User extends Object {
         this.prenom = prenom;
         this.mail = mail;
         this.telephone = telephone;
-        this.mdp = Sha256.encode(mdp);
+        this.mdp = mdp;
         if( id == null ) {
           this.idUser = Helped.genUUID();
         } else {

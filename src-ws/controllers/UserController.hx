@@ -14,7 +14,7 @@ class UserController {
 
 
 
-    if( Helped.auth(request) != null ) {
+    //if( Helped.auth(request) != null ) {
       if (reference == "all" && request.method == "GET") {
           retrieveAll(request);
       }else if(request.method != "POST" && reference == null){
@@ -28,9 +28,9 @@ class UserController {
                   default : request.setReturnCode(501, "Not implement");
           }
       }
-    } else {
-      request.setReturnCode(406, "Authentification Fail");
-    }
+    //} else {
+      //request.setReturnCode(406, "Authentification Fail");
+    //}
 
   }
 
@@ -92,9 +92,9 @@ class UserController {
 
   public static function updateUser(request : Request, idUser : String){
     var u : User;
+    var data : PUTUser = request.data;
     u = User.manager.get(idUser);
     if( Helped.admin(request) || Helped.himself(request, u) ) {
-      var data : PUTUser = request.data;
       if(u == null){
         request.setReturnCode(404,'Eleve not found');
         return;
@@ -103,6 +103,7 @@ class UserController {
         request.setReturnCode(400,'Bad login');
         return;
       };
+      u.login=data.login;
       if(data.nom == null || !Std.is(data.nom, String)){
         request.setReturnCode(400,'Bad nom');
         return;

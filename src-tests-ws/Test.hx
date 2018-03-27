@@ -5,6 +5,7 @@ import haxe.Json;
 import models.*;
 import sys.db.Manager;
 import haxe.io.BytesOutput;
+import haxe.crypto.Sha256;
 
 class Test extends TestCase{
     var wsuri : String;
@@ -42,7 +43,10 @@ class Test extends TestCase{
     }
 
     public function test03RetrieveUsers(){
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/user/all");
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onData = function (data : String){
             var retrieveUsers : Array<GETUser> = Json.parse(data);
             var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
@@ -66,7 +70,10 @@ class Test extends TestCase{
     }
 
     public function test04RetrieveOffers(){
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/offer/all");
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onData = function (data : String){
             var retrieveOffers : Array<GETOffer> = Json.parse(data);
             var offersDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
@@ -90,7 +97,10 @@ class Test extends TestCase{
 
     public function test05RetrieveUserByReference(){
         var user = User.manager.all().first();
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/user/" + user.idUser);
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onError = function(msg:String){
             assertTrue(false);
         }
@@ -110,7 +120,10 @@ class Test extends TestCase{
 
     public function test06RetrieveOfferByReference(){
         var offer = Offer.manager.all().first();
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/offer/" + offer.idOffer);
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onError = function(msg:String){
             assertTrue(false);
         }
@@ -130,9 +143,14 @@ class Test extends TestCase{
     public function test07PostUser(){
       var idUser : String = Helped.genUUID();
       var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
+          trace(msg);
         assertTrue(false);
+
 
       }
       req.onData = function(data:String){
@@ -156,10 +174,13 @@ class Test extends TestCase{
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
       var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, user:user};
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/offer/" + idOffer);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
+        trace(msg);
         assertTrue(false);
-
       }
       req.onData = function(data:String){
         var idOffer : String = Json.parse(data).idOffer;
@@ -181,10 +202,12 @@ class Test extends TestCase{
       var user = User.manager.all().first();
       var refUser = user.idUser;
       var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"aaaa"};
-
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
-
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
+          trace(msg);
           assertTrue(false);
       }
       req.onStatus = function (status : Int) {
@@ -196,7 +219,7 @@ class Test extends TestCase{
         assertEquals(newUser.prenom, user.prenom);
         assertEquals(newUser.mail, user.mail);
         assertEquals(newUser.telephone, user.telephone);
-        assertEquals(newUser.mdp, user.mdp);
+        assertEquals(Sha256.encode(newUser.mdp), user.mdp);
       }
       req.setHeader("Content-Type", "application/json");
       req.setPostData(Json.stringify(newUser));
@@ -207,7 +230,10 @@ class Test extends TestCase{
       var user : User;
       var user = User.manager.all().last();
       var refUser = user.idUser;
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/" + Std.string(refUser));
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
         assertTrue(false);
       }
@@ -229,7 +255,10 @@ class Test extends TestCase{
       var offer : Offer;
       var offer = Offer.manager.all().last();
       var refOffer = offer.idOffer;
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/" + Std.string(refOffer));
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
         assertTrue(false);
       }
@@ -249,21 +278,13 @@ class Test extends TestCase{
 
     public function test13Auth(){
       var req = new Http(wsuri + "?/auth/");
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onData = function (data : String){
-          var retrieveUsers : Array<GETUser> = Json.parse(data);
-          var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
-          //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
-          assertEquals(userDB.length, retrieveUsers.length);
-          for(i in 0...userDB.length)
-          {
-          assertEquals(retrieveUsers[i].idUser, userDB[i].idUser);
-          assertEquals(retrieveUsers[i].login, userDB[i].login);
-          assertEquals(retrieveUsers[i].nom, userDB[i].nom);
-          assertEquals(retrieveUsers[i].prenom, userDB[i].prenom);
-          assertEquals(retrieveUsers[i].mail, userDB[i].mail);
-          assertEquals(retrieveUsers[i].telephone, userDB[i].telephone);
-          assertEquals(retrieveUsers[i].mdp, userDB[i].mdp);
-          }
+          var retrieveUser : User = Json.parse(data);
+          assertEquals(retrieveUser.login, login);
+          assertEquals(retrieveUser.mdp, mdp);
       }
       req.onError = function (msg : String) {
         assertTrue(false);
