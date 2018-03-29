@@ -43,7 +43,7 @@ class Test extends TestCase{
     }
 
     public function test03Auth(){
-      var req = new Http(wsuri + "?/auth/");
+      var req = new Http(wsuri + "?/auth");
       var login = "admin";
       var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
@@ -164,7 +164,7 @@ class Test extends TestCase{
       var req = new Http(wsuri + "?/user/" + idUser);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
-          trace(msg);
+        trace(msg);
         assertTrue(false);
 
 
@@ -217,13 +217,12 @@ class Test extends TestCase{
     public function test10PutUser(){
       var user = User.manager.all().first();
       var refUser = user.idUser;
-      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"aaaa"};
+      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var login = "admin";
       var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
-          trace(msg);
           assertTrue(false);
       }
       req.onStatus = function (status : Int) {
@@ -293,6 +292,6 @@ class Test extends TestCase{
       req.customRequest(false, new BytesOutput(), "DELETE");
     }
 
-    
+
 
 }
