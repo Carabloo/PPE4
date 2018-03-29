@@ -13,7 +13,7 @@ class Offer extends Object {
     public var idOffer(default, null) : SString<36>;
     public var heure : SString<30>;
     public var km : Float;
-    public var date : Date;
+    public var date : SDate;
     public var jour : SString<5>;
     public var type : Bool;
 
