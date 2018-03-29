@@ -42,7 +42,23 @@ class Test extends TestCase{
         req.request(false /*GET*/);
     }
 
-    public function test03RetrieveUsers(){
+    public function test03Auth(){
+      var req = new Http(wsuri + "?/auth/");
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          var retrieveUser : User = Json.parse(data);
+          assertEquals(retrieveUser.login, login);
+          assertEquals(retrieveUser.mdp, mdp);
+      }
+      req.onError = function (msg : String) {
+        assertTrue(false);
+      }
+      req.request(false);
+    }
+
+    public function test04RetrieveUsers(){
         var login = "admin";
         var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/user/all");
@@ -69,7 +85,7 @@ class Test extends TestCase{
         req.request(false);
     }
 
-    public function test04RetrieveOffers(){
+    public function test05RetrieveOffers(){
         var login = "admin";
         var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
         var req = new Http(wsuri + "?/offer/all");
@@ -95,7 +111,7 @@ class Test extends TestCase{
         req.request(false);
     }
 
-    public function test05RetrieveUserByReference(){
+    public function test06RetrieveUserByReference(){
         var user = User.manager.all().first();
         var login = "admin";
         var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
@@ -118,7 +134,7 @@ class Test extends TestCase{
         req.request(false);
     }
 
-    public function test06RetrieveOfferByReference(){
+    public function test07RetrieveOfferByReference(){
         var offer = Offer.manager.all().first();
         var login = "admin";
         var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
@@ -140,7 +156,7 @@ class Test extends TestCase{
         req.request(false);
     }
 
-    public function test07PostUser(){
+    public function test08PostUser(){
       var idUser : String = Helped.genUUID();
       var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
       var login = "admin";
@@ -198,7 +214,7 @@ class Test extends TestCase{
       req.request(true); //POST
     }
 
-    public function test09PutUser(){
+    public function test10PutUser(){
       var user = User.manager.all().first();
       var refUser = user.idUser;
       var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"aaaa"};
@@ -277,20 +293,6 @@ class Test extends TestCase{
       req.customRequest(false, new BytesOutput(), "DELETE");
     }
 
-    public function test13Auth(){
-      var req = new Http(wsuri + "?/auth/");
-      var login = "admin";
-      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
-      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
-      req.onData = function (data : String){
-          var retrieveUser : User = Json.parse(data);
-          assertEquals(retrieveUser.login, login);
-          assertEquals(retrieveUser.mdp, mdp);
-      }
-      req.onError = function (msg : String) {
-        assertTrue(false);
-      }
-      req.request(false);
-    }
+    
 
 }
