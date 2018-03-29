@@ -2,7 +2,7 @@ import controller.Listener;
 import controller.Request;
 import sys.db.TableCreate;
 import sys.db.Manager;
-import php.db.PDO;
+import sys.db.Mysql;
 import haxe.web.Dispatch;
 import models.*;
 import api.*;
@@ -35,7 +35,14 @@ class Index {
         //routage
         try {
           Manager.initialize();
-          Manager.cnx = PDO.open("mysql:host=localhost;dbname=covoit_afg", "sqlfchevalier", "savary");
+          Manager.cnx = sys.db.Mysql.connect({
+              host : "www.sio-savary.fr",
+              port : 3306,
+              user : "sqlfchevalier",
+              pass : "savary",
+              socket : null,
+              database : "covoit_afg"
+          });
 
           if (! TableCreate.exists(User.manager)) {
               TableCreate.create(User.manager);

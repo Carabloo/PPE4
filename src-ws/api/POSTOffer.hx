@@ -1,5 +1,4 @@
 package api;
-import models.*;
 
 typedef POSTOffer = {
     @:optional var idOffer : String;
@@ -8,5 +7,5 @@ typedef POSTOffer = {
     public var date : Date;
     public var jour : String;
     public var type : Bool;
-    public var user : User;
+    public var idUser : String;
 }

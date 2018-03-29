@@ -50,24 +50,20 @@ class OfferController {
 
   public static function postOffer(request : Request, idOffer : String){
     var data : POSTOffer = request.data;
-    if(data.user == null || !Std.is(data.user, User)){
+    if(data.idUser == null || !Std.is(data.idUser, String)){
       request.setReturnCode(400,'Bad User');
       return;
     }
-    if( Helped.admin(request) || Helped.himself(request,data.user) ) {
+    var user : User = User.manager.get(data.idUser);
+    if( Helped.admin(request) || Helped.himself(request,user) ) {
       var data : POSTOffer = request.data;
       var o : Offer;
-      var user : User;
       if(data.heure == null || !Std.is(data.heure, String)){
         request.setReturnCode(400,'Bad heure');
         return;
       };
       if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
         request.setReturnCode(400,'Bad km');
-        return;
-      }
-      if(data.date == null || !Std.is(data.date, Date)){
-        request.setReturnCode(400,'Bad Date');
         return;
       }
       if(data.jour == null || !Std.is(data.jour, String)){
@@ -78,7 +74,7 @@ class OfferController {
         request.setReturnCode(400,'Bad Date');
         return;
       }
-      o = new Offer(data.heure,data.km,data.date,data.jour,data.type,data.user,idOffer);
+      o = new Offer(data.heure,data.km,data.date,data.jour,data.type,user,idOffer);
       o.insert();
       request.setHeader("Content-Type", "application/json");
       request.send("{\"idOffer\":\"" + o.idOffer + "\"}");

@@ -1,6 +1,7 @@
 -cp src-ws
 -cp src-tests-ws
 -lib record-macros
+-lib webwrap
 -main TestPPE
 -neko export/tests-ws.n
 

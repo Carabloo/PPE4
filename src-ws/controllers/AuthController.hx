@@ -6,7 +6,6 @@ import sys.db.Manager;
 import models.*;
 import haxe.Json;
 import api.*;
-import haxe.crypto.Sha256;
 import haxe.ds.StringMap;
 
 class AuthController {
@@ -22,8 +21,9 @@ class AuthController {
   }
 
   public static function connection(request : Request){
-    
+
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify('cool'));
+    var user : User = Helped.auth(request);
+    request.send(Json.stringify(user));
   }
 }
