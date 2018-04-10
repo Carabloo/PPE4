@@ -14,7 +14,7 @@ class UserController {
 
 
 
-    //if( Helped.auth(request) != null ) {
+    if( Helped.auth(request) != null ) {
       if (reference == "all" && request.method == "GET") {
           retrieveAll(request);
       }else if(request.method != "POST" && reference == null){
@@ -28,16 +28,34 @@ class UserController {
                   default : request.setReturnCode(501, "Not implement");
           }
       }
-    //} else {
-      //request.setReturnCode(406, "Authentification Fail");
-    //}
+    } else {
+      request.setReturnCode(406, "Authentification Fail");
+    }
 
   }
 
   public static function retrieveAll(request : Request){
     var userInDB : Array<GETUser> = cast Lambda.array(User.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(userInDB));
+    var res : String = "[";
+    var i : Int = 0;
+    for( i in 0...userInDB.length-1 ) {
+      res += "{\"idUser\":\"" + userInDB[i].idUser + "\",";
+      res += "\"login\":\"" + userInDB[i].login + "\",";
+      res += "\"nom\":\"" + userInDB[i].nom + "\",";
+      res += "\"prenom\":\"" + userInDB[i].prenom + "\",";
+      res += "\"mail\":\"" + userInDB[i].mail + "\",";
+      res += "\"telephone\":\"" + userInDB[i].telephone + "\", ";
+      res += "\"mdp\":\"" + userInDB[i].mdp + "\"},";
+    }
+    res += "{\"idUser\":\"" + userInDB[userInDB.length-1].idUser + "\", ";
+    res += "\"login\":\"" + userInDB[userInDB.length-1].login + "\", ";
+    res += "\"nom\":\"" + userInDB[userInDB.length-1].nom + "\", ";
+    res += "\"prenom\":\"" + userInDB[userInDB.length-1].prenom + "\", ";
+    res += "\"mail\":\"" + userInDB[userInDB.length-1].mail + "\", ";
+    res += "\"telephone\":\"" + userInDB[userInDB.length-1].telephone + "\", ";
+    res += "\"mdp\":\"" + userInDB[userInDB.length-1].mdp + "\"}]";
+    request.send(res);
   }
 
   public static function retrieveOne(request : Request, idUser : String){
