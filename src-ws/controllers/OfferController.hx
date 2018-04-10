@@ -34,7 +34,23 @@ class OfferController {
   public static function retrieveAllOffer(request : Request){
     var offerInDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
     request.setHeader('Content-Type','application/json');
-    request.send(Json.stringify(offerInDB));
+    var res : String = "[";
+    var i : Int = 0;
+    for( i in 0...offerInDB.length-1 ) {
+      res += "{\"idOffer\":\"" + offerInDB[i].idOffer + "\",";
+      res += "\"heure\":\"" + offerInDB[i].heure + "\",";
+      res += "\"km\":" + offerInDB[i].km + ",";
+      res += "\"date\":\"" + offerInDB[i].date + "\",";
+      res += "\"jour\":\"" + offerInDB[i].jour + "\",";
+      res += "\"type\":" + offerInDB[i].type + "},";
+    }
+    res += "{\"idOffer\":\"" + offerInDB[offerInDB.length-1].idOffer + "\",";
+    res += "\"heure\":\"" + offerInDB[offerInDB.length-1].heure + "\",";
+    res += "\"km\":" + offerInDB[offerInDB.length-1].km + ",";
+    res += "\"date\":\"" + offerInDB[offerInDB.length-1].date + "\",";
+    res += "\"jour\":\"" + offerInDB[offerInDB.length-1].jour + "\",";
+    res += "\"type\":" + offerInDB[offerInDB.length-1].type + "}]";
+    request.send(res);
   }
 
   public static function retrieveOneOffer(request : Request, idOffer : String){

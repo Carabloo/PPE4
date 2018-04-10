@@ -68,7 +68,7 @@ class Test extends TestCase{
             var userDB : Array<GETUser> = cast Lambda.array(User.manager.all());
             //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
             assertEquals(userDB.length, retrieveUsers.length);
-            for(i in 0...userDB.length)
+            for(i in 0...userDB.length-1)
             {
             assertEquals(retrieveUsers[i].idUser, userDB[i].idUser);
             assertEquals(retrieveUsers[i].login, userDB[i].login);
@@ -80,6 +80,7 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
+          trace(msg);
           assertTrue(false);
         }
         req.request(false);
@@ -158,7 +159,7 @@ class Test extends TestCase{
 
     public function test08PostUser(){
       var idUser : String = Helped.genUUID();
-      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'aaaa'};
+      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'};
       var login = "admin";
       var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/" + idUser);
@@ -195,7 +196,6 @@ class Test extends TestCase{
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
-        trace(msg);
         assertTrue(false);
       }
       req.onData = function(data:String){
@@ -217,7 +217,7 @@ class Test extends TestCase{
     public function test10PutUser(){
       var user = User.manager.all().first();
       var refUser = user.idUser;
-      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var newUser : PUTUser = {login:"admin",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var login = "admin";
       var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
