@@ -18,9 +18,18 @@ typedef Users = {
 class Main extends Sprite {
 	var main : VBox;
 	var mainAdmin : VBox;
+	var mainAdminCreateUser : VBox;
 	var identifiant : Input;
 	var motdepasse : Input;
 	var l : ListView<Users>;
+	var login : String;
+	var mdp : String;
+	var loginNewUser : Input;
+	var nomNewUser : Input;
+	var prenomNewUser : Input;
+	var mailNewUser : Input;
+	var telephoneNewUser : Input;
+	var mdpNewUser : Input;
 	
 	public function new () {
 		
@@ -47,10 +56,38 @@ class Main extends Sprite {
 		mainAdmin.pack(new TextButton(onClickDeconnexion, "Deconnexion", 0.30));
 		mainAdmin.pack(new Separator());
 		mainAdmin.pack(new TextButton(onClickAfficherUsers, "Afficher les utilisateurs",  1));
-		mainAdmin.pack(new TextButton(onClickCreateUsers, "Créer un utilisateur",  1));	
+		mainAdmin.pack(new TextButton(formCreateUsers, "Créer un utilisateur",  1));	
 		
 		l = new ListView(affichageUsers);
 		mainAdmin.pack(l);
+
+		mainAdminCreateUser = new VBox();
+		//mainAdminCreateUser.pack();
+
+		loginNewUser = new Input("", 50, 1);
+		nomNewUser = new Input("", 50, 1);
+		prenomNewUser = new Input("", 50, 1);
+		mailNewUser = new Input("", 50, 1);
+		telephoneNewUser = new Input("", 50, 1);
+		mdpNewUser = new Input("", 50, 1);
+
+		mainAdminCreateUser.pack(new Title("Créer un utilisateur"));
+		mainAdminCreateUser.pack(new Separator());
+		mainAdminCreateUser.pack(new Label ("Login :")); 
+		mainAdminCreateUser.pack(loginNewUser);
+		mainAdminCreateUser.pack(new Label ("Nom d'utilisateur :"));
+		mainAdminCreateUser.pack(nomNewUser);
+		mainAdminCreateUser.pack(new Label ("Prénom :")); 
+		mainAdminCreateUser.pack(prenomNewUser);
+		mainAdminCreateUser.pack(new Label ("Adresse Mail :"));
+		mainAdminCreateUser.pack(mailNewUser);
+		mainAdminCreateUser.pack(new Label ("Téléphone :")); 
+		mainAdminCreateUser.pack(telephoneNewUser);
+		mainAdminCreateUser.pack(new Label ("Mot de passe :"));
+		mainAdminCreateUser.pack(mdpNewUser);
+		mainAdminCreateUser.pack(new Separator());
+		mainAdminCreateUser.pack(new TextButton(onClickCreateUsers, "Créer", 0.30));
+		mainAdminCreateUser.pack(new TextButton(returnAccueil, "Accueil", 0.50));
 	} 
 	
 	function onClickConnexion(w : Control) {
@@ -62,13 +99,9 @@ class Main extends Sprite {
 		}
 	}
 
-	function onClickCreateUsers(w : Control) {
-		//
-	}
-
 	function onClickAfficherUsers(w : Control) {
 		var r = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
-		
+		r.addHeader("Cookie", "login="+ this.login +"; mdp=" + this.mdp);
 		r.onData = function(data : String) {
 			var users : Array<Users> = Json.parse(data);
 			l.source = users;
@@ -82,6 +115,11 @@ class Main extends Sprite {
 
 	function onClickDeconnexion(w : Control) {
 		Screen.display(main);
+		this.login = null;
+		this.mdp = null;
+		//this.identifiant.value = "";
+		//this.motdepasse.value = "";
+		//main.clear;
 	}
 
 	function Auth(login : String, mdp : String) : Bool{
@@ -90,6 +128,10 @@ class Main extends Sprite {
 	  req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onData = function (data : String){
 		  user = Json.parse(data);
+		  if (user != null) {
+			this.login = user.login;
+		  	this.mdp = user.mdp;
+		  } 
 		  trace(user);
       }
       req.request(false);
@@ -99,4 +141,16 @@ class Main extends Sprite {
 			  return false;
 		  }
     }
+
+	function returnAccueil(w : Control) {
+		Screen.display(mainAdmin);
+	}
+
+	function formCreateUsers(w : Control) {
+		Screen.display(mainAdminCreateUser);
+	}
+
+	function onClickCreateUsers(w : Control) {
+		//
+	}
 }
