@@ -80,7 +80,6 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
-          trace(msg);
           assertTrue(false);
         }
         req.request(false);
@@ -275,7 +274,6 @@ class Test extends TestCase{
       var req = new Http(wsuri + "?/offer/" + Std.string(refOffer));
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
-        trace(msg);
         assertTrue(false);
       }
       req.onStatus = function (status : Int) {
@@ -290,6 +288,51 @@ class Test extends TestCase{
         }
       }
       req.customRequest(false, new BytesOutput(), "DELETE");
+    }
+
+    public function test13NotFoundRetrieveUserByReference(){
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+        var req = new Http(wsuri + "?/user/80000000-e78a-4003-978a-d4066863a485");
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+        req.onData = function (data : String){
+            assertFalse(true);
+        }
+        req.onError = function(msg:String){
+            assertEquals(404,extractErrorCode(msg));
+        }
+        req.request(false);
+    }
+
+    public function test14NotFoundRetrieveOfferByReference(){
+        var login = "admin";
+        var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+        var req = new Http(wsuri + "?/offer/80000000-e78a-7854-978a-d4066863a485");
+        req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+        req.onData = function (data : String){
+            assertFalse(true);
+        }
+        req.onError = function(msg:String){
+            assertEquals(404,extractErrorCode(msg));
+        }
+        req.request(false);
+    }
+
+    public function test15PutUser(){
+      var newUser : PUTUser = {login:"admin",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var login = "admin";
+      var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+      var req = new Http(wsuri + "?/user/80000000-e78a-7854-978a-d4066863a485");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+            assertFalse(true);
+        }
+        req.onError = function(msg:String){
+            assertEquals(404,extractErrorCode(msg));
+        }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
     }
 
 
