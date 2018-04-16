@@ -6,6 +6,7 @@
 	<app main="Main" path="../export/mobile" file="TestUI" />
 	
 	<source path="Source" />
+	<source path="../src-ws" />
 	
 	<haxelib name="openfl" />
 	

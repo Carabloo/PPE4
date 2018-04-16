@@ -4,7 +4,7 @@ import buw.*;
 import haxe.Http;
 import haxe.Json;
 import haxe.crypto.Sha256;
-import api.*;
+import api.POSTUser;
 
 typedef Users = {
   public var idUser : String;
@@ -74,17 +74,17 @@ class Main extends Sprite {
 
 		mainAdminCreateUser.pack(new Title("Créer un utilisateur"));
 		mainAdminCreateUser.pack(new Separator());
-		mainAdminCreateUser.pack(new Label ("Login :")); 
+		mainAdminCreateUser.pack(new Label ("Login* :")); 
 		mainAdminCreateUser.pack(loginNewUser);
-		mainAdminCreateUser.pack(new Label ("Nom d'utilisateur :"));
+		mainAdminCreateUser.pack(new Label ("Nom* :"));
 		mainAdminCreateUser.pack(nomNewUser);
-		mainAdminCreateUser.pack(new Label ("Prénom :")); 
+		mainAdminCreateUser.pack(new Label ("Prénom* :")); 
 		mainAdminCreateUser.pack(prenomNewUser);
-		mainAdminCreateUser.pack(new Label ("Adresse Mail :"));
+		mainAdminCreateUser.pack(new Label ("Adresse Mail* :"));
 		mainAdminCreateUser.pack(mailNewUser);
-		mainAdminCreateUser.pack(new Label ("Téléphone :")); 
+		mainAdminCreateUser.pack(new Label ("Téléphone* :")); 
 		mainAdminCreateUser.pack(telephoneNewUser);
-		mainAdminCreateUser.pack(new Label ("Mot de passe :"));
+		mainAdminCreateUser.pack(new Label ("Mot de passe* :"));
 		mainAdminCreateUser.pack(mdpNewUser);
 		mainAdminCreateUser.pack(new Separator());
 		mainAdminCreateUser.pack(new TextButton(onClickCreateUsers, "Créer", 0.30));
@@ -152,47 +152,13 @@ class Main extends Sprite {
 	}
 
 	function onClickCreateUsers(w : Control) {
-		/*
-		var idUser : String = Helped.genUUID();
-		var postUser : POSTUser = {
-			login:"mpatrick",
-			nom:"Michon", 
-			prenom:"Patrick", 
-			mail:"test@gmail.fr", 
-			telephone:'0215474563', 
-			mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'
-		};
-		var login = "admin";
-		var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
-		var req = new Http(wsuri + "?/user/" + idUser);
-		req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
-		req.onError = function(msg:String) {
-			trace(msg);
-			assertTrue(false);
-		}
-		    req.onData = function(data:String) {
-			var idUser : String = Json.parse(data).idUser;
-			var user : User = User.manager.get(idUser);
-			assertTrue(user != null);
-			assertEquals(user.idUser,idUser);
-			assertEquals(user.login,postUser.login);
-			assertEquals(user.nom,postUser.nom);
-			assertEquals(user.prenom,postUser.prenom);
-			assertEquals(user.mail,postUser.mail);
-			assertEquals(user.telephone,postUser.telephone);
-			assertEquals(user.mdp,postUser.mdp);
-      	}
-			req.setHeader("Content-Type", "application/json");
-			req.setPostData(Json.stringify(postUser));
-			req.request(true); //POST
-		*/
 		var createUser : POSTUser = {
-			login: this.loginNewUser,
-			nom: this.nomNewUser, 
-			prenom: this.prenomNewUser, 
-			mail: this.mailNewUser, 
-			telephone: this.telephoneNewUser, 
-			mdp: this.mdpNewUser
+			login: this.loginNewUser.value,
+			nom: this.nomNewUser.value, 
+			prenom: this.prenomNewUser.value, 
+			mail: this.mailNewUser.value, 
+			telephone: this.telephoneNewUser.value, 
+			mdp: this.mdpNewUser.value
 		};
 		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?/user/");
 		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
