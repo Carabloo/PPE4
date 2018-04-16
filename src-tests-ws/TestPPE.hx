@@ -48,8 +48,8 @@ class TestPPE{
 
     public static function tearDown(){
         user.delete();
-        offer.delete();
         admin.delete();
+        offer.delete();
         Manager.cleanup();
     }
 }
