@@ -477,7 +477,119 @@ class Test extends TestCase{
       req.request(true); //POST
     }
 
+    public function test26BadloginPostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":" + 7 + ",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
 
+    public function test27BadnomPostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":" + 7 + ", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
+
+    public function test28BadprenomPostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":\"Michon\", \"prenom\":" + 1 + ", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
+
+    public function test29BadmailPostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":" + 1 + ", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
+
+    public function test30BadtelephonePostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":\"mail@test.fr\", \"telephone\":" + 0 + ", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
+
+    public function test31BadmdpPostUser(){
+      var idUser : String = Helped.genUUID();
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":\"mail@test.fr\", \"telephone\":\"0225636985\", \"mdp\":" + 4 + "}";
+      var req = new Http(wsuri + "?/user/" + idUser);
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(postUser);
+      req.request(true); //POST
+    }
+
+    public function test32BadloginPutUser(){
+      var user = User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":" + 1 + ",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      /*req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }*/
+      req.onError = function(msg:String){
+          trace( msg );
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
 
 
 }

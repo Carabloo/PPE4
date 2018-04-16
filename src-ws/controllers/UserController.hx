@@ -110,7 +110,13 @@ class UserController {
 
   public static function updateUser(request : Request, idUser : String){
     var u : User;
-    var data : PUTUser = request.data;
+    var data : PUTUser;
+    try {
+      data = request.data;
+    } catch (e : Dynamic) {
+      request.setReturnCode(400, 'bad data type');
+      return;
+    }
     u = User.manager.get(idUser);
     if( Helped.admin(request) || Helped.himself(request, u) ) {
       if(u == null){
@@ -146,7 +152,7 @@ class UserController {
         request.setReturnCode(400,'Bad mdp');
         return;
       }
-      u.mdp = Sha256.encode(data.mdp);
+      u.mdp = data.mdp;
       u.update();
     } else {
       request.setReturnCode(406, "No Permition");
