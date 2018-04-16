@@ -4,6 +4,7 @@ import buw.*;
 import haxe.Http;
 import haxe.Json;
 import haxe.crypto.Sha256;
+import api.*;
 
 typedef Users = {
   public var idUser : String;
@@ -100,13 +101,13 @@ class Main extends Sprite {
 	}
 
 	function onClickAfficherUsers(w : Control) {
-		var r = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
-		r.addHeader("Cookie", "login="+ this.login +"; mdp=" + this.mdp);
-		r.onData = function(data : String) {
+		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
+		req.addHeader("Cookie", "login="+ this.login +"; mdp=" + this.mdp);
+		req.onData = function(data : String) {
 			var users : Array<Users> = Json.parse(data);
 			l.source = users;
 	    } 
-	    r.request();
+	    req.request();
 	}
 	
 	function affichageUsers(e : Users) : Widget {
@@ -151,6 +152,52 @@ class Main extends Sprite {
 	}
 
 	function onClickCreateUsers(w : Control) {
-		//
+		/*
+		var idUser : String = Helped.genUUID();
+		var postUser : POSTUser = {
+			login:"mpatrick",
+			nom:"Michon", 
+			prenom:"Patrick", 
+			mail:"test@gmail.fr", 
+			telephone:'0215474563', 
+			mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'
+		};
+		var login = "admin";
+		var mdp = "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4";
+		var req = new Http(wsuri + "?/user/" + idUser);
+		req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+		req.onError = function(msg:String) {
+			trace(msg);
+			assertTrue(false);
+		}
+		    req.onData = function(data:String) {
+			var idUser : String = Json.parse(data).idUser;
+			var user : User = User.manager.get(idUser);
+			assertTrue(user != null);
+			assertEquals(user.idUser,idUser);
+			assertEquals(user.login,postUser.login);
+			assertEquals(user.nom,postUser.nom);
+			assertEquals(user.prenom,postUser.prenom);
+			assertEquals(user.mail,postUser.mail);
+			assertEquals(user.telephone,postUser.telephone);
+			assertEquals(user.mdp,postUser.mdp);
+      	}
+			req.setHeader("Content-Type", "application/json");
+			req.setPostData(Json.stringify(postUser));
+			req.request(true); //POST
+		*/
+		var createUser : POSTUser = {
+			login: this.loginNewUser,
+			nom: this.nomNewUser, 
+			prenom: this.prenomNewUser, 
+			mail: this.mailNewUser, 
+			telephone: this.telephoneNewUser, 
+			mdp: this.mdpNewUser
+		};
+		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?/user/");
+		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
+		req.setHeader("Content-Type", "application/json");
+		req.setPostData(Json.stringify(createUser));
+		req.request(true); 
 	}
 }
