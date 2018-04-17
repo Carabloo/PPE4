@@ -82,7 +82,7 @@ class UserController {
         return;
       };
       if(data.prenom == null || !Std.is(data.prenom, String)) {
-        request.setReturnCode(400,'Bad nom');
+        request.setReturnCode(400,'Bad prenom');
         return;
       }
       if(data.mail == null || !Std.is(data.mail, String)){
@@ -110,13 +110,7 @@ class UserController {
 
   public static function updateUser(request : Request, idUser : String){
     var u : User;
-    var data : PUTUser;
-    try {
-      data = request.data;
-    } catch (e : Dynamic) {
-      request.setReturnCode(400, 'bad data type');
-      return;
-    }
+    var data : PUTUser = request.data;
     u = User.manager.get(idUser);
     if( Helped.admin(request) || Helped.himself(request, u) ) {
       if(u == null){
