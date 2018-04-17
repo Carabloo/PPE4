@@ -41,6 +41,7 @@ class OfferController {
       res += "\"heure\":\"" + offerInDB[i].heure + "\",";
       res += "\"km\":" + offerInDB[i].km + ",";
       res += "\"date\":\"" + offerInDB[i].date + "\",";
+      res += "\"isFrom\":" + offerInDB[offerInDB.length-1].isFrom + ",";
       res += "\"jour\":\"" + offerInDB[i].jour + "\",";
       res += "\"type\":" + offerInDB[i].type + "},";
     }
@@ -48,6 +49,7 @@ class OfferController {
     res += "\"heure\":\"" + offerInDB[offerInDB.length-1].heure + "\",";
     res += "\"km\":" + offerInDB[offerInDB.length-1].km + ",";
     res += "\"date\":\"" + offerInDB[offerInDB.length-1].date + "\",";
+    res += "\"isFrom\":" + offerInDB[offerInDB.length-1].isFrom + ",";
     res += "\"jour\":\"" + offerInDB[offerInDB.length-1].jour + "\",";
     res += "\"type\":" + offerInDB[offerInDB.length-1].type + "}]";
     request.send(res);
@@ -86,11 +88,15 @@ class OfferController {
         request.setReturnCode(400,'Bad jour');
         return;
       }
+      if(data.isFrom == null || !Std.is(data.isFrom, Bool)){
+        request.setReturnCode(400,'Bad jour');
+        return;
+      }
       if(data.type == null || !Std.is(data.type, Bool)){
         request.setReturnCode(400,'Bad Date');
         return;
       }
-      o = new Offer(data.heure,data.km,data.date,data.jour,data.type,user,idOffer);
+      o = new Offer(data.heure,data.km,data.date,data.isFrom,data.jour,data.type,user,idOffer);
       o.insert();
       request.setHeader("Content-Type", "application/json");
       request.send("{\"idOffer\":\"" + o.idOffer + "\"}");

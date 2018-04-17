@@ -39,16 +39,18 @@ class TestPPE{
           }
         user = new User("fchevalier","François", "Chevalier", "test@mail.fr", "0629352663", "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4");
         admin = new User("admin","Fr","Che","test@mail.fr","0635285698", "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4");
-        offer = new Offer("4h20", 50, Date.now(), "mardi", true, user);
+        offer = new Offer("4h20", 50, Date.now(), true, "mardi", true, user);
 
-        user.insert();
+
         admin.insert();
+        user.insert();
         offer.insert();
     }
 
     public static function tearDown(){
-        user.delete();
+
         admin.delete();
+        user.delete();
         offer.delete();
         Manager.cleanup();
     }

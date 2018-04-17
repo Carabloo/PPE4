@@ -7,4 +7,5 @@ typedef PUTUser = {
   @:optional var mail : String;
   @:optional var telephone : String;
   @:optional var mdp : String;
+  @:optional var idEleve : String;
 }

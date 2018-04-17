@@ -22,7 +22,7 @@ class User extends Object {
         this.mail = mail;
         this.telephone = telephone;
         this.mdp = mdp;
-        if( id == null ) {
+        if( id == null || id == "" ) {
           this.idUser = Helped.genUUID();
         } else {
           this.idUser = id;

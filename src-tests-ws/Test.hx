@@ -97,6 +97,7 @@ class Test extends TestCase{
             assertEquals(retrieveOffers[i].heure, offersDB[i].heure);
             assertEquals(retrieveOffers[i].km, offersDB[i].km);
             assertEquals(retrieveOffers[i].date.toString(), offersDB[i].date.toString());
+            assertEquals(retrieveOffers[i].isFrom, offersDB[i].isFrom);
             assertEquals(retrieveOffers[i].jour, offersDB[i].jour);
             assertEquals(retrieveOffers[i].type, offersDB[i].type);
             }
@@ -141,6 +142,7 @@ class Test extends TestCase{
           assertEquals(retrievedOffer.heure, offer.heure);
           assertEquals(retrievedOffer.km, offer.km);
           assertEquals(retrievedOffer.date.toString(), offer.date.toString());
+          assertEquals(retrievedOffer.isFrom, offer.isFrom);
           assertEquals(retrievedOffer.jour, offer.jour);
           assertEquals(retrievedOffer.type, offer.type);
 
@@ -179,7 +181,7 @@ class Test extends TestCase{
     public function test08PostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, idUser:user.idUser};
+      var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), isFrom:true, jour:"jeudi", type:true, idUser:user.idUser};
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
@@ -192,6 +194,7 @@ class Test extends TestCase{
         assertEquals(offer.idOffer,idOffer);
         assertEquals(offer.heure,postOffer.heure);
         assertEquals(offer.km,postOffer.km);
+        assertEquals(offer.isFrom,postOffer.isFrom);
         assertEquals(offer.date.toString(),postOffer.date.toString());
         assertEquals(offer.jour,postOffer.jour);
         assertEquals(offer.type,postOffer.type);
@@ -202,12 +205,13 @@ class Test extends TestCase{
     }
 
     public function test10PutUser(){
-      var user = User.manager.all().first();
+      var user = User.manager.all().last();
       var refUser = user.idUser;
       var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
+          trace(msg);
           assertTrue(false);
       }
       req.onStatus = function (status : Int) {
@@ -219,7 +223,7 @@ class Test extends TestCase{
         assertEquals(newUser.prenom, user.prenom);
         assertEquals(newUser.mail, user.mail);
         assertEquals(newUser.telephone, user.telephone);
-        assertEquals(Sha256.encode(newUser.mdp), user.mdp);
+        assertEquals(newUser.mdp, user.mdp);
       }
       req.setHeader("Content-Type", "application/json");
       req.setPostData(Json.stringify(newUser));
@@ -344,7 +348,7 @@ class Test extends TestCase{
     public function test18NotPermittedPostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), jour:"jeudi", type:true, idUser:user.idUser};
+      var postOffer : POSTOffer = {heure:"5h10", km:12, date:Date.now(), isFrom:true, jour:"jeudi", type:true, idUser:user.idUser};
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp=449de884d8298fbd07c360720b14f5b65fdca217125a7f1eb5fc0e4b64db98e3");
       req.onData = function (data : String){
@@ -361,7 +365,7 @@ class Test extends TestCase{
     public function test19BadheurePostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":"+5+", \"km\":\"12\", \"date\":" + Date.now() +", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":"+5+", \"km\":\"12\", \"date\":" + Date.now() +", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -378,7 +382,7 @@ class Test extends TestCase{
     public function test20BadkmPostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": " + 12 + ", \"date\":" + Date.now() + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": " + 12 + ", \"date\":" + Date.now() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -395,7 +399,7 @@ class Test extends TestCase{
     public function test21BaddatePostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":\"Date.now()\", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":\"Date.now()\", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -409,10 +413,10 @@ class Test extends TestCase{
       req.request(true); //POST
     }
 
-    public function test22BadjourPostOffer(){
+    public function test22BadisFromPostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"jour\":" + 9 + ", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":\"Date.now()\", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -429,7 +433,7 @@ class Test extends TestCase{
     public function test23BadjourPostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"jour\":" + 9 + ", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"isFrom\":" + true + ", \"jour\":" + 9 + ", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -446,7 +450,7 @@ class Test extends TestCase{
     public function test24BadtypePostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"jour\":\"jeudi\", \"type\":" + 1 + ", \"idUser\":" + user.idUser + "}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + 1 + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -463,7 +467,7 @@ class Test extends TestCase{
     public function test25BadiduserPostOffer(){
       var idOffer : String = Helped.genUUID();
       var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":\"user.idUser\"}";
+      var postOffer : String = "{\"heure\":\"5h12\", \"km\": \"12\", \"date\":" + Date.now() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":\"user.idUser\"}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -579,9 +583,10 @@ class Test extends TestCase{
       var newUser : String = "{\"login\":" + 1 + ",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
       var req = new Http(wsuri + "?/user/"+ refUser);
       req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
-      /*req.onStatus = function (status : Int) {
+      req.onStatus = function (status : Int) {
+        trace(status);
         assertEquals(400, status);
-      }*/
+      }
       req.onError = function(msg:String){
           trace( msg );
           assertEquals(400,extractErrorCode(msg));
