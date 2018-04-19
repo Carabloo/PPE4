@@ -76,10 +76,6 @@ class OfferController {
     if( Helped.admin(request) || Helped.himself(request,user) ) {
       var data : POSTOffer = request.data;
       var o : Offer;
-      if(data.heure == null || !Std.is(data.heure, String)){
-        request.setReturnCode(400,'Bad heure');
-        return;
-      };
       if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
         request.setReturnCode(400,'Bad km');
         return;
