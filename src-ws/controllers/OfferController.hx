@@ -93,7 +93,7 @@ class OfferController {
         return;
       }
       if(data.type == null || !Std.is(data.type, Bool)){
-        request.setReturnCode(400,'Bad Date');
+        request.setReturnCode(400,'Bad Type');
         return;
       }
       o = new Offer(data.heure,data.km,data.date,data.isFrom,data.jour,data.type,user,idOffer);
