@@ -84,6 +84,9 @@ class Main extends Sprite {
 		l = new ListView(affichageUsers);
 		mainAdmin.pack(l);
 
+		/*var v : HBox = new Hbox(1, [new HBoxColumn(0.5), new HBoxColumn(0.25), new HBoxColumn(0.25)]);
+		v.pack(l)*/
+
 		mainAdminCreateUser = new VBox();
 
 		loginNewUser = new Input("", 50, 1);
@@ -123,10 +126,13 @@ class Main extends Sprite {
 		mainUserCreateOffer = new VBox();
 
 		heureNewOffer = new Input("", 50, 1);
-		kmNewOffer = new Input("", 50, 1);
-		dateNewOffer = new Input("", 50, 1);
-		jourNewOffer = new Input("", 50, 1);
-		typeNewOffer = new Input("", 50, 1);
+		kmNewOffer = new Input("", 50, 1); //float
+		dateNewOffer = new Input("", 50, 1); //date
+		//isFromNewOffer = new RadioBox(true); //bool
+		isFromNewOffer = new RadioBox(false).add(new TextRadioButton("Entreprise")).add(new TextRadioButton("Lycée"));
+		jourNewOffer = new Input("", 50, 1); 
+		//typeNewOffer = new RadioBox(true); //bool
+		typeNewOffer = new RadioBox(false).add(new TextRadioButton("Permanente")).add(new TextRadioButton("Ponctuelle")); 
 
 		mainUserCreateOffer.pack(new Title("Créer une offre"));
 		mainUserCreateOffer.pack(new Separator());
@@ -136,6 +142,8 @@ class Main extends Sprite {
 		mainUserCreateOffer.pack(kmNewOffer);
 		mainUserCreateOffer.pack(new Label ("Date* :")); 
 		mainUserCreateOffer.pack(dateNewOffer);
+		mainUserCreateOffer.pack(new Label ("Départ depuis* :")); 
+		mainUserCreateOffer.pack(isFromNewOffer);
 		mainUserCreateOffer.pack(new Label ("Jour* :"));
 		mainUserCreateOffer.pack(jourNewOffer);
 		mainUserCreateOffer.pack(new Label ("Type* :")); 
@@ -169,16 +177,13 @@ class Main extends Sprite {
 	}
 	
 	function affichageUsers(e : Users) : Widget {
-		return new Label(e.nom + " " + e.prenom);
+		return new Label(e.nom + " " + e.prenom); //hbox de 3 afficher modifier supprimer
 	}
 
 	function onClickDeconnexion(w : Control) {
 		Screen.display(main);
 		this.login = null;
 		this.mdp = null;
-		//this.identifiant.value = "";
-		//this.motdepasse.value = "";
-		//main.clear;
 	}
 
 	function Auth(login : String, mdp : String) : Bool{
@@ -236,7 +241,7 @@ class Main extends Sprite {
 	}
 
 	function affichageOffers(o : Offers) : Widget {
-		return new Label(o.km + " " + o.date + " " + o.jour + " " + o.type + " " + o.user);
+		return new Label(o.heure + " " + o.km + " " + o.date + " " + o.jour + " " + o.type + " " + o.user);
 	}
 
 	function formCreateOffer(w : Control) {
@@ -244,7 +249,7 @@ class Main extends Sprite {
 	}
 
 	function onClickCreateOffer(w : Control) {
-		var createOffer : POSTOffer = {
+		/*var createOffer : POSTOffer = {
 			heure: this.heureNewOffer.value,
 			km: this.kmNewOffer.value, 
 			date: this.dateNewOffer.value, 
@@ -255,6 +260,6 @@ class Main extends Sprite {
 		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
 		req.setHeader("Content-Type", "application/json");
 		req.setPostData(Json.stringify(createOffer));
-		req.request(true);
+		req.request(true);*/
 	}
 }
