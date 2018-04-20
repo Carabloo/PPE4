@@ -18,11 +18,11 @@ class Offer extends Object {
     public var jour : SString<5>;
     public var type : Bool;
 
-    public function new(heure : Date, km : Float, date : Date, isFrom : Bool, jour : String, type : Bool, user : User, ?id : String = null) {
+    public function new(heure : String, km : Float, date : String, isFrom : Bool, jour : String, type : Bool, user : User, ?id : String = null) {
         super();
-        this.heure = heure;
+        this.heure = Date.fromString(heure);
         this.km=km;
-        this.date=date;
+        this.date = Date.fromString(date);
         this.isFrom=isFrom;
         this.jour=jour;
         this.type=type;

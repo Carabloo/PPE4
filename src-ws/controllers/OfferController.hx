@@ -76,6 +76,14 @@ class OfferController {
     if( Helped.admin(request) || Helped.himself(request,user) ) {
       var data : POSTOffer = request.data;
       var o : Offer;
+      if(data.heure == null || !Std.is(data.heure, String)) {
+        request.setReturnCode(400,'Bad heure');
+        return;
+      }
+      if(data.date == null || !Std.is(data.date, String)) {
+        request.setReturnCode(400,'Bad date');
+        return;
+      }
       if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
         request.setReturnCode(400,'Bad km');
         return;
@@ -89,7 +97,7 @@ class OfferController {
         return;
       }
       if(data.type == null || !Std.is(data.type, Bool)){
-        request.setReturnCode(400,'Bad Type');
+        request.setReturnCode(400,'Bad type');
         return;
       }
       o = new Offer(data.heure,data.km,data.date,data.isFrom,data.jour,data.type,user,idOffer);
