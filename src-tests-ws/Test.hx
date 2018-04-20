@@ -87,6 +87,7 @@ class Test extends TestCase{
         var req = new Http(wsuri + "?/offer/all");
         req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onData = function (data : String){
+            trace(data);
             var retrieveOffers : Array<GETOffer> = Json.parse(data);
             var offersDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
             //var articlesDB : Array<Produit> = cast Lambda.array(Article.manager.all());
@@ -103,13 +104,14 @@ class Test extends TestCase{
             }
         }
         req.onError = function(msg:String){
+          trace(msg);
           assertTrue(false);
         }
         req.request(false);
     }
 
     public function test06RetrieveUserByReference(){
-        var user = User.manager.all().first();
+        var user : GETUser = cast User.manager.all().first();
         var req = new Http(wsuri + "?/user/" + user.idUser);
         req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onError = function(msg:String){
@@ -130,7 +132,7 @@ class Test extends TestCase{
     }
 
     public function test07RetrieveOfferByReference(){
-        var offer = Offer.manager.all().first();
+        var offer : GETOffer = cast Offer.manager.all().first();
         var req = new Http(wsuri + "?/offer/" + offer.idOffer);
         req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
         req.onError = function(msg:String){
@@ -163,7 +165,7 @@ class Test extends TestCase{
       }
       req.onData = function(data:String){
         var idUser : String = Json.parse(data).idUser;
-        var user : User = User.manager.get(idUser);
+        var user : GETUser = cast User.manager.get(idUser);
         assertTrue(user != null);
         assertEquals(user.idUser,idUser);
         assertEquals(user.login,postUser.login);
@@ -180,16 +182,17 @@ class Test extends TestCase{
 
     public function test08PostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : POSTOffer = {heure:Date.now().toString(), km:12, date:Date.now().toString(), isFrom:true, jour:"jeudi", type:true, idUser:user.idUser};
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : POSTOffer = {heure:Date.now().toString(), km:12, date:Date.now().toString(), isFrom:"true", jour:"jeudi", type:"true", idUser:user.idUser};
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
+        trace( msg );
         assertTrue(false);
       }
       req.onData = function(data:String){
         var idOffer : String = Json.parse(data).idOffer;
-        var offer : Offer = Offer.manager.get(idOffer);
+        var offer : GETOffer = cast Offer.manager.get(idOffer);
         assertTrue(offer != null);
         assertEquals(offer.idOffer,idOffer);
         assertEquals(offer.heure.toString(),postOffer.heure.toString());
@@ -205,7 +208,7 @@ class Test extends TestCase{
     }
 
     public function test10PutUser(){
-      var user = User.manager.all().last();
+      var user : GETUser = cast User.manager.all().last();
       var refUser = user.idUser;
       var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
@@ -217,7 +220,7 @@ class Test extends TestCase{
       req.onStatus = function (status : Int) {
         assertEquals(200,status);
         Manager.cleanup();
-        user = User.manager.get(refUser);
+        user = cast User.manager.get(refUser);
         assertEquals(newUser.login, user.login);
         assertEquals(newUser.nom, user.nom);
         assertEquals(newUser.prenom, user.prenom);
@@ -231,8 +234,8 @@ class Test extends TestCase{
     }
 
     public function test11DeleteUser(){
-      var user : User;
-      var user = User.manager.all().last();
+      var user : GETUser;
+      var user = cast User.manager.all().last();
       var refUser = user.idUser;
       var req = new Http(wsuri + "?/user/" + Std.string(refUser));
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
@@ -254,8 +257,8 @@ class Test extends TestCase{
     }
 
     public function test12DeleteOffer(){
-      var offer : Offer;
-      var offer = Offer.manager.all().last();
+      var offer : GETOffer;
+      var offer =  cast Offer.manager.all().last();
       var refOffer = offer.idOffer;
       var req = new Http(wsuri + "?/offer/" + Std.string(refOffer));
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
@@ -329,7 +332,7 @@ class Test extends TestCase{
     }
 
     public function test17NotPermittedPutUser(){
-      var user = User.manager.all().first();
+      var user : GETUser = cast User.manager.all().first();
       var refUser = user.idUser;
       var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var req = new Http(wsuri + "?/user/"+ Std.string(refUser));
@@ -347,8 +350,8 @@ class Test extends TestCase{
 
     public function test18NotPermittedPostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : POSTOffer = {heure:Date.now().toString(), km:12, date:Date.now().toString(), isFrom:true, jour:"jeudi", type:true, idUser:user.idUser};
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : POSTOffer = {heure:Date.now().toString(), km:12, date:Date.now().toString(), isFrom:"false", jour:"jeudi", type:"false", idUser:user.idUser};
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp=449de884d8298fbd07c360720b14f5b65fdca217125a7f1eb5fc0e4b64db98e3");
       req.onData = function (data : String){
@@ -364,8 +367,8 @@ class Test extends TestCase{
 
     public function test19BadheurePostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":"+5+", \"km\":\"12\", \"date\":" + Date.now().toString() +", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":"+5+", \"km\":\"12\", \"date\":" + Date.now().toString() +", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":\"false\", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -381,8 +384,8 @@ class Test extends TestCase{
 
     public function test20BadkmPostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": " + 12 + ", \"date\":" + Date.now().toString() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": " + 12 + ", \"date\":" + Date.now().toString() + ", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":\"false\", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -398,8 +401,8 @@ class Test extends TestCase{
 
     public function test21BaddatePostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":\"Date.now().toString()\", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":\"Date.now().toString()\", \"isFrom\":\"false\", \"jour\":\"jeudi\", \"type\":" + true +", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -415,8 +418,8 @@ class Test extends TestCase{
 
     public function test22BadisFromPostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":\"Date.now().toString()\", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":\"Date.now().toString()\", \"isFrom\":" + 1 + ", \"jour\":\"jeudi\", \"type\":\"false\", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -432,8 +435,8 @@ class Test extends TestCase{
 
     public function test23BadjourPostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":" + true + ", \"jour\":" + 9 + ", \"type\":" + true + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":\"true\", \"jour\":" + 9 + ", \"type\":\"true\", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -449,8 +452,8 @@ class Test extends TestCase{
 
     public function test24BadtypePostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + 1 + ", \"idUser\":" + user.idUser + "}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":" + 1 + ", \"idUser\":" + user.idUser + "}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -466,8 +469,8 @@ class Test extends TestCase{
 
     public function test25BadiduserPostOffer(){
       var idOffer : String = Helped.genUUID();
-      var user : User = User.manager.all().first();
-      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":" + true + ", \"jour\":\"jeudi\", \"type\":" + true + ", \"idUser\":\"user.idUser\"}";
+      var user : GETUser = cast User.manager.all().first();
+      var postOffer : String = "{\"heure\":" + Date.now().toString() + ", \"km\": \"12\", \"date\":" + Date.now().toString() + ", \"isFrom\":\"true\", \"jour\":\"jeudi\", \"type\":\"true\", \"idUser\":\"user.idUser\"}";
       var req = new Http(wsuri + "?/offer/" + idOffer);
       req.addHeader("Cookie","login="+ login +"; mdp" + mdp);
       req.onData = function (data : String){
@@ -578,7 +581,7 @@ class Test extends TestCase{
     }
 
     public function test32BadloginPutUser(){
-      var user = User.manager.all().first();
+      var user : GETUser = cast User.manager.all().first();
       var refUser = user.idUser;
       var newUser : String = "{\"login\":" + 1 + ",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
       var req = new Http(wsuri + "?/user/"+ refUser);

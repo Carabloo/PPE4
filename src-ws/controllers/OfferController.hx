@@ -41,17 +41,19 @@ class OfferController {
       res += "\"heure\":\"" + offerInDB[i].heure + "\",";
       res += "\"km\":" + offerInDB[i].km + ",";
       res += "\"date\":\"" + offerInDB[i].date + "\",";
-      res += "\"isFrom\":" + offerInDB[offerInDB.length-1].isFrom + ",";
+      res += "\"isFrom\":\"" + offerInDB[offerInDB.length-1].isFrom + "\",";
       res += "\"jour\":\"" + offerInDB[i].jour + "\",";
-      res += "\"type\":" + offerInDB[i].type + "},";
+      res += "\"type\":\"" + offerInDB[i].type + "\",";
+      res += "\"idUser\":\"" + offerInDB[i].user+ "\",},";
     }
     res += "{\"idOffer\":\"" + offerInDB[offerInDB.length-1].idOffer + "\",";
     res += "\"heure\":\"" + offerInDB[offerInDB.length-1].heure + "\",";
     res += "\"km\":" + offerInDB[offerInDB.length-1].km + ",";
     res += "\"date\":\"" + offerInDB[offerInDB.length-1].date + "\",";
-    res += "\"isFrom\":" + offerInDB[offerInDB.length-1].isFrom + ",";
+    res += "\"isFrom\":\"" + offerInDB[offerInDB.length-1].isFrom + "\",";
     res += "\"jour\":\"" + offerInDB[offerInDB.length-1].jour + "\",";
-    res += "\"type\":" + offerInDB[offerInDB.length-1].type + "}]";
+    res += "\"type\":\"" + offerInDB[offerInDB.length-1].type + "\",";
+    res += "\"idUser\":\"" + offerInDB[offerInDB.length-1].user + "\"}]";
     request.send(res);
   }
 
@@ -92,11 +94,11 @@ class OfferController {
         request.setReturnCode(400,'Bad jour');
         return;
       }
-      if(data.isFrom == null || !Std.is(data.isFrom, Bool)){
-        request.setReturnCode(400,'Bad jour');
+      if(data.isFrom == null || !Std.is(data.isFrom, String)){
+        request.setReturnCode(400,'Bad isFrom');
         return;
       }
-      if(data.type == null || !Std.is(data.type, Bool)){
+      if(data.type == null || !Std.is(data.type, String)){
         request.setReturnCode(400,'Bad type');
         return;
       }

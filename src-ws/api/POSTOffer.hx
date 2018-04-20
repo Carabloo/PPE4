@@ -5,8 +5,8 @@ typedef POSTOffer = {
     public var heure : String;
     public var km : Float;
     public var date : String;
-    public var isFrom : Bool;
+    public var isFrom : String;
     public var jour : String;
-    public var type : Bool;
+    public var type : String;
     public var idUser : String;
 }

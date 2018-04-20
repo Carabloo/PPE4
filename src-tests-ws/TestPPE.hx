@@ -39,7 +39,7 @@ class TestPPE{
           }
         user = new User("fchevalier","François", "Chevalier", "test@mail.fr", "0629352663", "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4");
         admin = new User("admin","Fr","Che","test@mail.fr","0635285698", "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4");
-        offer = new Offer(Date.now().toString(), 50, Date.now().toString(), true, "mardi", true, user);
+        offer = new Offer(Date.now().toString(), 50, Date.now().toString(), "false", "mardi", "true", user);
 
 
         admin.insert();

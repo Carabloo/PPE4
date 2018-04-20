@@ -14,18 +14,18 @@ class Offer extends Object {
     public var heure : Date;
     public var km : Float;
     public var date : Date;
-    public var isFrom : Bool;
+    public var isFrom : SString<5>;
     public var jour : SString<5>;
-    public var type : Bool;
+    public var type : SString<5>;
 
-    public function new(heure : String, km : Float, date : String, isFrom : Bool, jour : String, type : Bool, user : User, ?id : String = null) {
+    public function new(heure : String, km : Float, date : String, isFrom : String, jour : String, type : String, user : User, ?id : String = null) {
         super();
         this.heure = Date.fromString(heure);
         this.km=km;
         this.date = Date.fromString(date);
-        this.isFrom=isFrom;
-        this.jour=jour;
-        this.type=type;
+        this.type = type;
+        this.jour = jour;
+        this.isFrom = isFrom;
         this.user=user;
         if( id == null || id == "" ) {
           this.idOffer = Helped.genUUID();
