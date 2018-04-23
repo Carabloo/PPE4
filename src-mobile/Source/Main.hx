@@ -21,11 +21,11 @@ typedef Offers = {
     public var idOffer : String;
     public var heure : String;
     public var km : Float;
-    public var date : Date;
-    public var isFrom : Bool;	
+    public var date : String;
+    public var isFrom : String;	
     public var jour : String;
-    public var type : Bool;
-    public var user : Users;
+    public var type : String;
+    public var idUser : String;
 }
 
 class Main extends Sprite {
@@ -45,7 +45,8 @@ class Main extends Sprite {
 	var mdpNewUser : Input;
 
 	var mainUser : VBox;
-	var mainUserCreateOffer : VBox;
+	var mainUserCreateOfferPermanente : VBox;
+	var mainUserCreateOfferPonctuelle : VBox;
 	var l2 : ListView<Offers>;
 	var heureNewOffer : Input;
 	var kmNewOffer : Input;
@@ -118,39 +119,56 @@ class Main extends Sprite {
 		mainUser.pack(new TextButton(onClickDeconnexion, "Deconnexion", 0.30));
 		mainUser.pack(new Separator());
 		mainUser.pack(new TextButton(onClickAfficherOffers, "Afficher les offres",  1));
-		mainUser.pack(new TextButton(formCreateOffer, "Créer une offre",  1));
+		mainUser.pack(new TextButton(formCreateOfferPermanente, "Créer une offre permanente",  1));
+		mainUser.pack(new TextButton(formCreateOfferPonctuelle, "Créer une offre ponctuelle",  1));
 
 		l2 = new ListView(affichageOffers);
 		mainUser.pack(l2);
 
-		mainUserCreateOffer = new VBox();
-
 		heureNewOffer = new Input("", 50, 1);
-		kmNewOffer = new Input("", 50, 1); //float
-		dateNewOffer = new Input("", 50, 1); //date
-		//isFromNewOffer = new RadioBox(true); //bool
-		isFromNewOffer = new RadioBox(false).add(new TextRadioButton("Entreprise")).add(new TextRadioButton("Lycée"));
-		jourNewOffer = new Input("", 50, 1); 
-		//typeNewOffer = new RadioBox(true); //bool
+		kmNewOffer = new Input("", 50, 1);
+		dateNewOffer = new Input("", 50, 1);
+		isFromNewOffer = new RadioBox(false).add(new TextRadioButton("Domicile")).add(new TextRadioButton("Lycée"));
+		jourNewOffer = new Input("", 50, 1);
 		typeNewOffer = new RadioBox(false).add(new TextRadioButton("Permanente")).add(new TextRadioButton("Ponctuelle")); 
 
-		mainUserCreateOffer.pack(new Title("Créer une offre"));
-		mainUserCreateOffer.pack(new Separator());
-		mainUserCreateOffer.pack(new Label ("Heure* :")); 
-		mainUserCreateOffer.pack(heureNewOffer);
-		mainUserCreateOffer.pack(new Label ("Kilomètres* :"));
-		mainUserCreateOffer.pack(kmNewOffer);
-		mainUserCreateOffer.pack(new Label ("Date* :")); 
-		mainUserCreateOffer.pack(dateNewOffer);
-		mainUserCreateOffer.pack(new Label ("Départ depuis* :")); 
-		mainUserCreateOffer.pack(isFromNewOffer);
-		mainUserCreateOffer.pack(new Label ("Jour* :"));
-		mainUserCreateOffer.pack(jourNewOffer);
-		mainUserCreateOffer.pack(new Label ("Type* :")); 
-		mainUserCreateOffer.pack(typeNewOffer);
-		mainUserCreateOffer.pack(new Separator());
-		mainUserCreateOffer.pack(new TextButton(onClickCreateOffer, "Créer", 0.30));
-		mainUserCreateOffer.pack(new TextButton(returnAccueil, "Accueil", 0.50));
+		mainUserCreateOfferPermanente = new VBox();
+
+		mainUserCreateOfferPermanente.pack(new Title("Créer une offre permanente"));
+		mainUserCreateOfferPermanente.pack(new Separator());
+		mainUserCreateOfferPermanente.pack(new Label ("Heure* :")); 
+		mainUserCreateOfferPermanente.pack(heureNewOffer);
+		mainUserCreateOfferPermanente.pack(new Label ("Kilomètres* :"));
+		mainUserCreateOfferPermanente.pack(kmNewOffer);
+		mainUserCreateOfferPermanente.pack(new Label ("Départ depuis* :")); 
+		mainUserCreateOfferPermanente.pack(isFromNewOffer);
+		mainUserCreateOfferPermanente.pack(new Label ("Jour* :"));
+		mainUserCreateOfferPermanente.pack(jourNewOffer);
+		mainUserCreateOfferPermanente.pack(new Label ("Type* :")); 
+		mainUserCreateOfferPermanente.pack(typeNewOffer);
+		mainUserCreateOfferPermanente.pack(new Separator());
+		mainUserCreateOfferPermanente.pack(new TextButton(onClickCreateOfferPermanente, "Créer", 0.30));
+		mainUserCreateOfferPermanente.pack(new TextButton(returnAccueil, "Accueil", 0.50));
+
+		mainUserCreateOfferPonctuelle = new VBox();
+
+		mainUserCreateOfferPonctuelle.pack(new Title("Créer une offre permanente"));
+		mainUserCreateOfferPonctuelle.pack(new Separator());
+		mainUserCreateOfferPonctuelle.pack(new Label ("Heure* :")); 
+		mainUserCreateOfferPonctuelle.pack(heureNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Label ("Kilomètres* :"));
+		mainUserCreateOfferPonctuelle.pack(kmNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Label ("Date* :"));
+		mainUserCreateOfferPonctuelle.pack(dateNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Label ("Départ depuis* :")); 
+		mainUserCreateOfferPonctuelle.pack(isFromNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Label ("Jour* :"));
+		mainUserCreateOfferPonctuelle.pack(jourNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Label ("Type* :")); 
+		mainUserCreateOfferPonctuelle.pack(typeNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Separator());
+		mainUserCreateOfferPonctuelle.pack(new TextButton(onClickCreateOfferPonctuelle, "Créer", 0.30));
+		mainUserCreateOfferPonctuelle.pack(new TextButton(returnAccueil, "Accueil", 0.50));
 	} 
 	
 	function onClickConnexion(w : Control) {
@@ -207,7 +225,14 @@ class Main extends Sprite {
     }
 
 	function returnAccueil(w : Control) {
-		Screen.display(mainAdmin);
+		//Screen.display(mainAdmin);
+		if (Auth(login, mdp)){
+			if(login == "admin") {
+				Screen.display(mainAdmin);
+			} else {
+				Screen.display(mainUser);
+			}			
+		}
 	}
 
 	function formCreateUser(w : Control) {
@@ -241,14 +266,33 @@ class Main extends Sprite {
 	}
 
 	function affichageOffers(o : Offers) : Widget {
-		return new Label(o.heure + " " + o.km + " " + o.date + " " + o.jour + " " + o.type + " " + o.user);
+		return new Label(o.heure + " " + o.km + " " + o.date + " " + o.jour + " " + o.type + " " + o.idUser);
 	}
 
-	function formCreateOffer(w : Control) {
-		Screen.display(mainUserCreateOffer);
+	function formCreateOfferPermanente(w : Control) {
+		Screen.display(mainUserCreateOfferPermanente);
 	}
 
-	function onClickCreateOffer(w : Control) {
+	function onClickCreateOfferPermanente(w : Control) {
+		/*var createOffer : POSTOffer = {
+			heure: this.heureNewOffer.value,
+			km: this.kmNewOffer.value, 
+			date: this.dateNewOffer.value, 
+			jour: this.jourNewOffer.value, 
+			type: this.typeNewOffer.value
+		};
+		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?/offer");
+		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
+		req.setHeader("Content-Type", "application/json");
+		req.setPostData(Json.stringify(createOffer));
+		req.request(true);*/
+	}
+
+	function formCreateOfferPonctuelle(w : Control) {
+		Screen.display(mainUserCreateOfferPonctuelle);
+	}
+
+	function onClickCreateOfferPonctuelle(w : Control) {
 		/*var createOffer : POSTOffer = {
 			heure: this.heureNewOffer.value,
 			km: this.kmNewOffer.value, 
