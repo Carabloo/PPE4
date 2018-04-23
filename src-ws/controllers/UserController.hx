@@ -73,7 +73,7 @@ class UserController {
     if( Helped.admin(request) ) {
       var data : POSTUser = request.data;
       var u : User;
-      if(data.login == null || !Std.is(data.login, String)){
+      if(data.login == null || !Std.is(data.login, String) || !Helped.checkLogin(data.login)){
         request.setReturnCode(400,'Bad login');
         return;
       };
@@ -85,11 +85,11 @@ class UserController {
         request.setReturnCode(400,'Bad prenom');
         return;
       }
-      if(data.mail == null || !Std.is(data.mail, String)){
+      if(data.mail == null || !Std.is(data.mail, String) || ! ~/^[\w-\.]{2,}@[ÅÄÖåäö\w-\.]{2,}\.[a-z]{2,6}$/.match(data.mail)){
         request.setReturnCode(400,'Bad mail');
         return;
       }
-      if(data.telephone == null || !Std.is(data.telephone, String)){
+      if(data.telephone == null || !Std.is(data.telephone, String) || ! ~/^[0-9]{10}$/.match(data.telephone)){
         request.setReturnCode(400,'Bad telephone');
         return;
       }

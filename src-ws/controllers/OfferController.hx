@@ -88,25 +88,29 @@ class OfferController {
         request.setReturnCode(400,'Bad heure');
         return;
       }
-      if(!Std.is(data.date, String) || ! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
-        var parts = data.date.split("-");
-        //if (Std.parseInt(parts[0]) < 1900)
-        request.setReturnCode(400,'Bad date');
-        return;
+      if(data.date == ""){
+        data.date = null;
+      } else {
+        if(!Std.is(data.date, String) || ! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
+          request.setReturnCode(400,'Bad date');
+          return;
+        }
       }
       if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
         request.setReturnCode(400,'Bad km');
         return;
       }
-      if(data.jour == null || !Std.is(data.jour, String)){
+      var joursSemaine : Array<String> = new Array();
+      joursSemaine = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
+      if(data.jour == null || !Std.is(data.jour, String) || joursSemaine.indexOf(data.jour)!=1){
         request.setReturnCode(400,'Bad jour');
         return;
       }
-      if(data.isFrom == null || !Std.is(data.isFrom, String)){
+      if(data.isFrom == null || !Std.is(data.isFrom, String) || data.isFrom != "true" || data.isFrom != "false"){
         request.setReturnCode(400,'Bad isFrom');
         return;
       }
-      if(data.type == null || !Std.is(data.type, String)){
+      if(data.type == null || !Std.is(data.type, String) || data.type != "true" || data.type != "false"){
         request.setReturnCode(400,'Bad type');
         return;
       }

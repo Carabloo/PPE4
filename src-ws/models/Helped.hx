@@ -54,4 +54,14 @@ class Helped {
     }
   }
 
+  public static function checkLogin(login : String) :  Bool {
+    var users : Array<User> = cast Lambda.array(User.manager.all());
+    for( u in users ) {
+      if( u.login == login) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

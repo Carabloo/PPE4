@@ -154,6 +154,7 @@ class Test extends TestCase{
       var req = new Http(wsuri + "?/user/1");
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function(msg:String){
+        trace(msg);
         assertTrue(false);
       }
       req.onData = function(data:String){
