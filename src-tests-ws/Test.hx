@@ -200,7 +200,7 @@ class Test extends TestCase{
     public function test10PutUser(){
       var user : GETUser = cast User.manager.all().first();
       var refUser = user.idUser;
-      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var newUser : PUTUser = {login:"admin",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var req = new Http(wsuri + "?/user/" + refUser);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
