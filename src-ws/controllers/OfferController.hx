@@ -37,14 +37,15 @@ class OfferController {
     var res : String = "[";
     var i : Int = 0;
     for( i in 0...offerInDB.length-1 ) {
+
       res += "{\"idOffer\":\"" + offerInDB[i].idOffer + "\",";
       res += "\"heure\":\"" + offerInDB[i].heure + "\",";
       res += "\"km\":" + offerInDB[i].km + ",";
       res += "\"date\":\"" + offerInDB[i].date + "\",";
-      res += "\"isFrom\":\"" + offerInDB[offerInDB.length-1].isFrom + "\",";
+      res += "\"isFrom\":\"" + offerInDB[i].isFrom + "\",";
       res += "\"jour\":\"" + offerInDB[i].jour + "\",";
       res += "\"type\":\"" + offerInDB[i].type + "\",";
-      res += "\"idUser\":\"" + offerInDB[i].user+ "\",},";
+      res += "\"idUser\":\"" + offerInDB[i].idUser + "\"},";
     }
     res += "{\"idOffer\":\"" + offerInDB[offerInDB.length-1].idOffer + "\",";
     res += "\"heure\":\"" + offerInDB[offerInDB.length-1].heure + "\",";
@@ -53,7 +54,7 @@ class OfferController {
     res += "\"isFrom\":\"" + offerInDB[offerInDB.length-1].isFrom + "\",";
     res += "\"jour\":\"" + offerInDB[offerInDB.length-1].jour + "\",";
     res += "\"type\":\"" + offerInDB[offerInDB.length-1].type + "\",";
-    res += "\"idUser\":\"" + offerInDB[offerInDB.length-1].user + "\"}]";
+    res += "\"idUser\":\"" + offerInDB[offerInDB.length-1].idUser + "\"}]";
     request.send(res);
   }
 
@@ -69,7 +70,12 @@ class OfferController {
   }
 
   public static function postOffer(request : Request, idOffer : String){
-    var data : POSTOffer = request.data;
+    var data : POSTOffer = null;
+    try {
+      data = request.data;
+    } catch (e : Dynamic) {
+      request.setReturnCode(400,'Post type error');
+    }
     if(data.idUser == null || !Std.is(data.idUser, String)){
       request.setReturnCode(400,'Bad User');
       return;
@@ -78,11 +84,13 @@ class OfferController {
     if( Helped.admin(request) || Helped.himself(request,user) ) {
       var data : POSTOffer = request.data;
       var o : Offer;
-      if(data.heure == null || !Std.is(data.heure, String)) {
+      if(data.heure == null || ! ~/^[0-9]{2}:[0-9]{2}$/.match(data.heure)) {
         request.setReturnCode(400,'Bad heure');
         return;
       }
-      if(data.date == null || !Std.is(data.date, String)) {
+      if(!Std.is(data.date, String) || ! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
+        var parts = data.date.split("-");
+        //if (Std.parseInt(parts[0]) < 1900)
         request.setReturnCode(400,'Bad date');
         return;
       }

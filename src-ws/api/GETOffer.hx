@@ -9,5 +9,5 @@ typedef GETOffer = {
     public var isFrom : String;
     public var jour : String;
     public var type : String;
-    public var user : User;
+    public var idUser : String;
 }

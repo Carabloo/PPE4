@@ -110,7 +110,12 @@ class UserController {
 
   public static function updateUser(request : Request, idUser : String){
     var u : User;
-    var data : PUTUser = request.data;
+    var data : PUTUser = null;
+    try {
+      data = request.data;
+    } catch (e : Dynamic) {
+      request.setReturnCode(400,'Put type error');
+    }
     u = User.manager.get(idUser);
     if( Helped.admin(request) || Helped.himself(request, u) ) {
       if(u == null){
