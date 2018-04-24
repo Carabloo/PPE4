@@ -129,7 +129,7 @@ class UserController {
         request.setReturnCode(404,'Eleve not found');
         return;
       }
-      if (data.login == null || !Helped.checkLogin(data.login)){
+      if (data.login == null || !Helped.checkSameLogin(request, data.login)){
         request.setReturnCode(400,'Bad login');
         return;
       };

@@ -71,6 +71,19 @@ class Helped {
     return res;
   }
 
+  public static function checkSameLogin(request : Request, login : String) :  Bool {
+    var res : Bool = true;
+    var cookies : StringMap<String> = request.cookies;
+    var loginCookie = cookies.get("login");
+    var users : Array<User> = cast Lambda.array(User.manager.all());
+    for ( u in users ) {
+      if ( u.login == login && login != loginCookie ) {
+        res = false;
+      }
+    }
+    return res;
+  }
+
   public static function deleteUserOffer(idUser : String){
     var offer : Array<Offer> = cast Lambda.array(Offer.manager.all());
     var u : User = null;
