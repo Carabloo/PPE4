@@ -37,6 +37,7 @@ class Main extends Sprite {
 	var l : ListView<Users>;
 	var login : String;
 	var mdp : String;
+	var idUser : String;
 	var loginNewUser : Input;
 	var nomNewUser : Input;
 	var prenomNewUser : Input;
@@ -152,7 +153,7 @@ class Main extends Sprite {
 
 		mainUserCreateOfferPonctuelle = new VBox();
 
-		mainUserCreateOfferPonctuelle.pack(new Title("Créer une offre permanente"));
+		mainUserCreateOfferPonctuelle.pack(new Title("Créer une offre ponctuelle"));
 		mainUserCreateOfferPonctuelle.pack(new Separator());
 		mainUserCreateOfferPonctuelle.pack(new Label ("Heure* :")); 
 		mainUserCreateOfferPonctuelle.pack(heureNewOffer);
@@ -202,6 +203,7 @@ class Main extends Sprite {
 		Screen.display(main);
 		this.login = null;
 		this.mdp = null;
+		this.idUser = null;
 	}
 
 	function Auth(login : String, mdp : String) : Bool{
@@ -213,6 +215,7 @@ class Main extends Sprite {
 		  if (user != null) {
 			this.login = user.login;
 		  	this.mdp = user.mdp;
+			this.idUser = user.idUser;
 		  } 
 		  trace(user);
       }
@@ -266,7 +269,7 @@ class Main extends Sprite {
 	}
 
 	function affichageOffers(o : Offers) : Widget {
-		return new Label(o.heure + " " + o.km + " " + o.date + " " + o.jour + " " + o.type + " " + o.idUser);
+		return new Label("heure : " + o.heure + ", kilomètres : " + o.km + ", date : " + o.date + ", jour : " + o.jour + ", type : " + o.type + ", id Utilisateur : " + o.idUser);
 	}
 
 	function formCreateOfferPermanente(w : Control) {
@@ -274,17 +277,18 @@ class Main extends Sprite {
 	}
 
 	function onClickCreateOfferPermanente(w : Control) {
-		/*var createOffer : POSTOffer = {
+		/*var createOfferPermanente : POSTOffer = {
 			heure: this.heureNewOffer.value,
 			km: this.kmNewOffer.value, 
-			date: this.dateNewOffer.value, 
+			isFrom: this.isFromNewOffer.value, 
 			jour: this.jourNewOffer.value, 
-			type: this.typeNewOffer.value
+			type: this.typeNewOffer.value,
+			idUser: this.idUser
 		};
 		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?/offer");
 		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
 		req.setHeader("Content-Type", "application/json");
-		req.setPostData(Json.stringify(createOffer));
+		req.setPostData(Json.stringify(createOfferPermanente));
 		req.request(true);*/
 	}
 
@@ -293,17 +297,34 @@ class Main extends Sprite {
 	}
 
 	function onClickCreateOfferPonctuelle(w : Control) {
-		/*var createOffer : POSTOffer = {
+		var isFromRadioBox : String = null;
+		var typeRadioBox : String = null;
+
+		if (isFromNewOffer.selected == 0) {
+			isFromRadioBox = "false";
+		} else {
+			isFromRadioBox = "true";
+		}
+		
+		if (typeNewOffer.selected == 0) { 
+			typeRadioBox = "false";
+		} else {
+			typeRadioBox = "true";
+		}
+
+		var createOfferPonctuelle : POSTOffer = {
 			heure: this.heureNewOffer.value,
 			km: this.kmNewOffer.value, 
-			date: this.dateNewOffer.value, 
-			jour: this.jourNewOffer.value, 
-			type: this.typeNewOffer.value
+			date: this.dateNewOffer.value,
+			isFrom: isFromRadioBox,
+			jour: this.jourNewOffer.value,
+			type: typeRadioBox,
+			idUser: this.idUser
 		};
 		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?/offer");
 		req.addHeader("Cookie","login="+ this.login +"; mdp=" + this.mdp);	
 		req.setHeader("Content-Type", "application/json");
-		req.setPostData(Json.stringify(createOffer));
-		req.request(true);*/
+		req.setPostData(Json.stringify(createOfferPonctuelle));
+		req.request(true);
 	}
 }
