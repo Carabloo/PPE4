@@ -580,5 +580,284 @@ class Test extends TestCase{
       req.customRequest(false, new BytesOutput(), "PUT");
     }
 
+    public function test33BadnomPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":\"1\",\"nom\":" + 1 + ",\"prenom\":\"Francois\",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(newUser);
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test34BadprenomPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":\"1\",\"nom\":\"Chevalier\",\"prenom\":" + 1 + ",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(newUser);
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test35BadmailPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":\"1\",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":" + 1 + ",\"telephone\":\"0205147568\",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(newUser);
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test36BadtelephonePutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":\"1\",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":\"mail@mail.fr\",\"telephone\":"+0+",\"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(newUser);
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test37BadmdpPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : String = "{\"login\":\"1\",\"nom\":\"Chevalier\",\"prenom\":\"Francois\",\"mail\":\"test\",\"telephone\":\"0205147568\",\"mdp\":" + 6 + "}";
+      var req = new Http(wsuri + "?/user/"+ refUser);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(newUser);
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test38ExistingloginPostUser(){
+      var postUser : POSTUser = {login:"admin",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474563', mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'};
+      var req = new Http(wsuri + "?/user/1");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postUser));
+      req.request(true); //POST
+    }
+
+    public function test39BadMailFormatPostUser(){
+      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test", telephone:'0215474563', mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'};
+      var req = new Http(wsuri + "?/user/1");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postUser));
+      req.request(true); //POST
+    }
+
+    public function test40TelephoneLengthPostUser(){
+      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'02154745', mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4'};
+      var req = new Http(wsuri + "?/user/1");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postUser));
+      req.request(true); //POST
+    }
+
+    public function test41MdpLengthPostUser(){
+      var postUser : POSTUser = {login:"mpatrick",nom:"Michon", prenom:"Patrick", mail:"test@gmail.fr", telephone:'0215474515', mdp:'61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af'};
+      var req = new Http(wsuri + "?/user/1");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postUser));
+      req.request(true); //POST
+    }
+
+    public function test42ExistingLoginPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : PUTUser = {login:"admin",nom:"Chevalier",prenom:"Francois",mail:"test@mail.fr",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var req = new Http(wsuri + "?/user/1");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test43BadMailFormatPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var req = new Http(wsuri + "?/user/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test44TelephoneLengthPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test@mail.fr",telephone:"020514756",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var req = new Http(wsuri + "?/user/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test45MpdLengthPutUser(){
+      var user : GETUser = cast User.manager.all().first();
+      var refUser = user.idUser;
+      var newUser : PUTUser = {login:"fchevalier",nom:"Chevalier",prenom:"Francois",mail:"test@mail.fr",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0"};
+      var req = new Http(wsuri + "?/user/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.addHeader("Cookie","login="+ login +"; mdp="+ mdp);
+      req.onStatus = function (status : Int) {
+        assertEquals(400, status);
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(newUser));
+      req.customRequest(false, new BytesOutput(), "PUT");
+    }
+
+    public function test46BadHeureFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12-30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"jeudi", type:"true", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
+
+    public function test47BadkmFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12:30", km:-1, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"jeudi", type:"true", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
+
+    public function test48BadDateFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12:30", km:12, date:"1256:32:22", isFrom:"true", jour:"jeudi", type:"true", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
+
+    public function test49isFormFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12:30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"az", jour:"jeudi", type:"true", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
+
+    public function test50jourFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12:30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"jeud", type:"true", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
+
+    public function test51typeFormatPostOffer(){
+      var postOffer : POSTOffer = {heure:"12:30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"jeudi", type:"oi", idUser:"1"};
+      var req = new Http(wsuri + "?/offer/2");
+      req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
+      req.onData = function (data : String){
+          assertFalse(true);
+      }
+      req.onError = function(msg:String){
+          assertEquals(400,extractErrorCode(msg));
+      }
+      req.setHeader("Content-Type", "application/json");
+      req.setPostData(Json.stringify(postOffer));
+      req.request(true); //POST
+    }
 
 }
