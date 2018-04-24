@@ -12,9 +12,10 @@ class Helped {
 
   public static function genUUID() : String {
       //copied from https://github.com/ciscoheat/haxelow (based on https://gist.github.com/LeverOne/1308368)
-      var uid = new StringBuf(), a = 8;
+      var uid = new StringBuf();
+      var a : Int = 8;
       uid.add(StringTools.hex(Std.int(Date.now().getTime()), 8));
-      while((a++) < 36) {
+      while ((a++) < 36) {
           uid.add(a*51 & 52 != 0
               ? StringTools.hex(a^15 != 0 ? 8^Std.int(Math.random() * (a^20 != 0 ? 16 : 4)) : 4)
               : "-"
@@ -28,48 +29,54 @@ class Helped {
     var login = cookies.get("login");
     var mdp = cookies.get("mdp");
     var users : Array<User> = cast Lambda.array(User.manager.all());
-    for( u in users ) {
-      if( u.login == login && mdp == u.mdp) {
-        return u;
+    var res : User = null;
+    for ( u in users ) {
+      if ( u.login == login && mdp == u.mdp) {
+        res = u;
       }
     }
-    return null;
+    return res;
   }
 
   public static function admin(request : Request) : Bool {
+    var res : Bool;
     var u : User = auth(request);
-    if( u != null && u.login == 'admin') {
-        return true;
+    if ( u != null && u.login == 'admin') {
+        res = true;
     } else {
-      return false;
+      res = false;
     }
+    return res;
   }
 
   public static function himself(request : Request, user : User) : Bool {
+    var res : Bool = null;
     var u: User = auth(request);
-    if( u != null && u.idUser == user.idUser ) {
-      return true;
+    if ( u != null && u.idUser == user.idUser ) {
+      res = true;
     } else {
-      return false;
+      res = false;
     }
+    return res;
   }
 
   public static function checkLogin(login : String) :  Bool {
+    var res : Bool = true;
     var users : Array<User> = cast Lambda.array(User.manager.all());
-    for( u in users ) {
-      if( u.login == login) {
-        return false;
+    for ( u in users ) {
+      if ( u.login == login) {
+        res = false;
       }
     }
-    return true;
+    return res;
   }
 
-  public static function deleteUserOffer(idUser : String) : Void {
+  public static function deleteUserOffer(idUser : String){
     var offer : Array<Offer> = cast Lambda.array(Offer.manager.all());
     var u : User = null;
-    for( o in offer ) {
+    for ( o in offer ) {
       u = o.user;
-      if( u.idUser == idUser) {
+      if ( u.idUser == idUser) {
         o.delete;
       }
     }

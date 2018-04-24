@@ -201,10 +201,11 @@ class Test extends TestCase{
     public function test10PutUser(){
       var user : GETUser = cast User.manager.all().first();
       var refUser = user.idUser;
-      var newUser : PUTUser = {login:"admin",nom:"Chevalier",prenom:"Francois",mail:"test",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
+      var newUser : PUTUser = {login:"admin2",nom:"Chevalier",prenom:"Francois",mail:"test@mail.fr",telephone:"0205147568",mdp:"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4"};
       var req = new Http(wsuri + "?/user/" + refUser);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onError = function (msg : String) {
+          trace( msg );
           assertTrue(false);
       }
       req.onStatus = function (status : Int) {
@@ -472,7 +473,7 @@ class Test extends TestCase{
 
     public function test26BadloginPostUser(){
       var idUser : String = Helped.genUUID();
-      var postUser : String = "{\"login\":" + 7 + ",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var postUser : String = "{\"login\":" + Date.now() + ",\"nom\":\"Michon\", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
       var req = new Http(wsuri + "?/user/" + idUser);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onData = function (data : String){
@@ -488,7 +489,7 @@ class Test extends TestCase{
 
     public function test27BadnomPostUser(){
       var idUser : String = Helped.genUUID();
-      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":" + 7 + ", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
+      var postUser : String = "{\"login\":\"fchevalier\",\"nom\":" + Date.now() + ", \"prenom\":\"Patrick\", \"mail\":\"test@gmail.fr\", \"telephone\":\"0215474563\", \"mdp\":\"61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4\"}";
       var req = new Http(wsuri + "?/user/" + idUser);
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onData = function (data : String){
@@ -831,7 +832,7 @@ class Test extends TestCase{
     }
 
     public function test50jourFormatPostOffer(){
-      var postOffer : POSTOffer = {heure:"12:30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"jeud", type:"true", idUser:"1"};
+      var postOffer : POSTOffer = {heure:"12:30", km:12, date:DateTools.format(Date.now(),"%F"), isFrom:"true", jour:"z", type:"true", idUser:"1"};
       var req = new Http(wsuri + "?/offer/2");
       req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
       req.onData = function (data : String){

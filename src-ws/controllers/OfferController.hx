@@ -12,10 +12,10 @@ class OfferController {
   public static function dispatch(request : Request, reference : String){
 
 
-    if( Helped.auth(request) != null ) {
+    if ( Helped.auth(request) != null ) {
       if (reference == "all" && request.method == "GET") {
           retrieveAllOffer(request);
-      }else if(request.method != "POST" && reference == null){
+      }else if (request.method != "POST" && reference == null){
           request.setReturnCode(406, "Not Acceptable\nmissing reference");
       }else {
           switch (request.method) {
@@ -36,7 +36,7 @@ class OfferController {
     request.setHeader('Content-Type','application/json');
     var res : String = "[";
     var i : Int = 0;
-    for( i in 0...offerInDB.length-1 ) {
+    for ( i in 0...offerInDB.length-1 ) {
 
       res += "{\"idOffer\":\"" + offerInDB[i].idOffer + "\",";
       res += "\"heure\":\"" + offerInDB[i].heure + "\",";
@@ -62,7 +62,7 @@ class OfferController {
     request.setHeader('Content-Type','application/json');
     var trajet : Offer;
     trajet = Offer.manager.get(idOffer);
-    if(trajet == null){
+    if (trajet == null){
       request.setReturnCode(404, 'Offer not found for ifOffer ' + idOffer);
       return;
     }
@@ -76,41 +76,41 @@ class OfferController {
     } catch (e : Dynamic) {
       request.setReturnCode(400,'Post type error');
     }
-    if(data.idUser == null){
+    if (data.idUser == null){
       request.setReturnCode(400,'Bad User');
       return;
     }
     var user : User = User.manager.get(data.idUser);
-    if( Helped.admin(request) || Helped.himself(request,user) ) {
+    if ( Helped.admin(request) || Helped.himself(request,user) ) {
       var data : POSTOffer = request.data;
       var o : Offer;
-      if(data.heure == null || ! ~/^[0-9]{2}:[0-9]{2}$/.match(data.heure)) {
+      if (data.heure == null || ! ~/^[0-9]{2}:[0-9]{2}$/.match(data.heure)) {
         request.setReturnCode(400,'Bad heure');
         return;
       }
-      if(data.date == ""){
+      if (data.date == ""){
         data.date = null;
       } else {
-        if(! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
+        if (! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
           request.setReturnCode(400,'Bad date');
           return;
         }
       }
-      if(data.km == null || !Std.is(data.km, Float) || data.km<0) {
+      if (data.km == null || !Std.is(data.km, Float) || data.km<0) {
         request.setReturnCode(400,'Bad km');
         return;
       }
       var joursSemaine : Array<String> = new Array();
       joursSemaine = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
-      if(data.jour == null || joursSemaine.indexOf(data.jour)==null){
+      if (data.jour == null || joursSemaine.indexOf(data.jour) == -1){
         request.setReturnCode(400,'Bad jour');
         return;
       }
-      if(data.isFrom == null || (data.isFrom != "true" && data.isFrom != "false")){
+      if (data.isFrom == null || (data.isFrom != "true" && data.isFrom != "false")){
         request.setReturnCode(400,'Bad isFrom ' + data.isFrom);
         return;
       }
-      if(data.type == null || (data.type != "true" && data.type != "false")){
+      if (data.type == null || (data.type != "true" && data.type != "false")){
         request.setReturnCode(400,'Bad type');
         return;
       }
@@ -126,8 +126,8 @@ class OfferController {
   public static function deleteOffer(request : Request, idOffer : String){
     var o : Offer;
     o = Offer.manager.get(idOffer);
-    if( Helped.admin(request) || Helped.himself(request,o.user) ) {
-      if(o == null){
+    if ( Helped.admin(request) || Helped.himself(request,o.user) ) {
+      if (o == null){
         request.setReturnCode(404,'Offer not found');
         return;
       }
