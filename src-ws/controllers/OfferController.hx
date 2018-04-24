@@ -76,7 +76,7 @@ class OfferController {
     } catch (e : Dynamic) {
       request.setReturnCode(400,'Post type error');
     }
-    if(data.idUser == null || !Std.is(data.idUser, String)){
+    if(data.idUser == null){
       request.setReturnCode(400,'Bad User');
       return;
     }
@@ -91,7 +91,7 @@ class OfferController {
       if(data.date == ""){
         data.date = null;
       } else {
-        if(!Std.is(data.date, String) || ! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
+        if(! ~/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.match(data.date)) {
           request.setReturnCode(400,'Bad date');
           return;
         }
@@ -102,15 +102,15 @@ class OfferController {
       }
       var joursSemaine : Array<String> = new Array();
       joursSemaine = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
-      if(data.jour == null || !Std.is(data.jour, String) || joursSemaine.indexOf(data.jour)!=1){
+      if(data.jour == null || joursSemaine.indexOf(data.jour)==null){
         request.setReturnCode(400,'Bad jour');
         return;
       }
-      if(data.isFrom == null || !Std.is(data.isFrom, String) || data.isFrom != "true" || data.isFrom != "false"){
-        request.setReturnCode(400,'Bad isFrom');
+      if(data.isFrom == null || (data.isFrom != "true" && data.isFrom != "false")){
+        request.setReturnCode(400,'Bad isFrom ' + data.isFrom);
         return;
       }
-      if(data.type == null || !Std.is(data.type, String) || data.type != "true" || data.type != "false"){
+      if(data.type == null || (data.type != "true" && data.type != "false")){
         request.setReturnCode(400,'Bad type');
         return;
       }

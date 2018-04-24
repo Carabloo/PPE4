@@ -71,29 +71,34 @@ class UserController {
 
   public static function postUser(request : Request, idUser : String){
     if( Helped.admin(request) ) {
-      var data : POSTUser = request.data;
+      var data : POSTUser = null;
       var u : User;
-      if(data.login == null || !Std.is(data.login, String) || !Helped.checkLogin(data.login)){
+      try {
+        data = request.data;
+      } catch (e : Dynamic) {
+        request.setReturnCode(400,'POSTUser type error');
+      }
+      if(data.login == null || !Helped.checkLogin(data.login)){
         request.setReturnCode(400,'Bad login');
         return;
       };
-      if(data.nom == null || !Std.is(data.nom, String)){
+      if(data.nom == null){
         request.setReturnCode(400,'Bad nom');
         return;
       };
-      if(data.prenom == null || !Std.is(data.prenom, String)) {
+      if(data.prenom == null) {
         request.setReturnCode(400,'Bad prenom');
         return;
       }
-      if(data.mail == null || !Std.is(data.mail, String) || ! ~/^[\w-\.]{2,}@[ÅÄÖåäö\w-\.]{2,}\.[a-z]{2,6}$/.match(data.mail)){
+      if(data.mail == null || ! ~/^[\w-\.]{2,}@[ÅÄÖåäö\w-\.]{2,}\.[a-z]{2,6}$/.match(data.mail)){
         request.setReturnCode(400,'Bad mail');
         return;
       }
-      if(data.telephone == null || !Std.is(data.telephone, String) || ! ~/^[0-9]{10}$/.match(data.telephone)){
+      if(data.telephone == null || ! ~/^[0-9]{10}$/.match(data.telephone)){
         request.setReturnCode(400,'Bad telephone');
         return;
       }
-      if(data.mdp == null || !Std.is(data.mdp, String)){
+      if(data.mdp == null){
         request.setReturnCode(400,'Bad mdp');
         return;
       }
@@ -114,7 +119,7 @@ class UserController {
     try {
       data = request.data;
     } catch (e : Dynamic) {
-      request.setReturnCode(400,'Put type error');
+      request.setReturnCode(400,'PUTUser type error');
     }
     u = User.manager.get(idUser);
     if( Helped.admin(request) || Helped.himself(request, u) ) {
@@ -122,32 +127,32 @@ class UserController {
         request.setReturnCode(404,'Eleve not found');
         return;
       }
-      if(data.login == null || !Std.is(data.login, String)){
+      if(data.login == null || !Helped.checkLogin(data.login)){
         request.setReturnCode(400,'Bad login');
         return;
       };
       u.login=data.login;
-      if(data.nom == null || !Std.is(data.nom, String)){
+      if(data.nom == null){
         request.setReturnCode(400,'Bad nom');
         return;
       };
       u.nom=data.nom;
-      if(data.prenom == null || !Std.is(data.prenom, String)) {
+      if(data.prenom == null) {
         request.setReturnCode(400,'Bad prenom');
         return;
       }
       u.prenom=data.prenom;
-      if(data.mail == null || !Std.is(data.mail, String)){
+      if(data.mail == null || ! ~/^[\w-\.]{2,}@[ÅÄÖåäö\w-\.]{2,}\.[a-z]{2,6}$/.match(data.mail)){
         request.setReturnCode(400,'Bad mail');
         return;
       }
       u.mail=data.mail;
-      if(data.telephone == null || !Std.is(data.telephone, String)){
+      if(data.telephone == null || ! ~/^[0-9]{10}$/.match(data.telephone)){
         request.setReturnCode(400,'Bad telephone');
         return;
       }
       u.telephone=data.telephone;
-      if(data.mdp == null || !Std.is(data.mdp, String)){
+      if(data.mdp == null){
         request.setReturnCode(400,'Bad mdp');
         return;
       }
