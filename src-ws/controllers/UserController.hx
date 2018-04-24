@@ -98,7 +98,7 @@ class UserController {
         request.setReturnCode(400,'Bad telephone');
         return;
       }
-      if(data.mdp == null){
+      if(data.mdp == null || data.mdp.length!=64){
         request.setReturnCode(400,'Bad mdp');
         return;
       }
@@ -152,7 +152,7 @@ class UserController {
         return;
       }
       u.telephone=data.telephone;
-      if(data.mdp == null){
+      if(data.mdp == null || data.mdp.length!=64){
         request.setReturnCode(400,'Bad mdp');
         return;
       }
@@ -173,6 +173,7 @@ class UserController {
         request.setReturnCode(404,'Eleve not found');
         return;
       }
+      Helped.deleteUserOffer(idUser);
       u.delete();
     } else {
       request.setReturnCode(406, "No Permition");

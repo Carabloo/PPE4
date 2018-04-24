@@ -64,4 +64,15 @@ class Helped {
     return true;
   }
 
+  public static function deleteUserOffer(idUser : String) : Void {
+    var offer : Array<Offer> = cast Lambda.array(Offer.manager.all());
+    var u : User = null;
+    for( o in offer ) {
+      u = o.user;
+      if( u.idUser == idUser) {
+        o.delete;
+      }
+    }
+  }
+
 }
