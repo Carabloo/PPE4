@@ -56,8 +56,7 @@ class Main extends Sprite {
 	var jourNewOffer : Input;
 	var typeNewOffer : RadioBox;
 
-	public function new () {
-		
+	public function new () {		
 		super();
 		main = new VBox();
 		main.pack(new Title("AFG Covoiturage")); //.pack() permet d'afficher dans un contener (= addChild + placement automatique les uns sur les autres)
@@ -155,16 +154,21 @@ class Main extends Sprite {
 
 		mainUserCreateOfferPonctuelle.pack(new Title("Créer une offre ponctuelle"));
 		mainUserCreateOfferPonctuelle.pack(new Separator());
-		mainUserCreateOfferPonctuelle.pack(new Label ("Heure* :")); 
+		mainUserCreateOfferPonctuelle.pack(new Label ("Heure (ex : 09:50)* :")); 
 		mainUserCreateOfferPonctuelle.pack(heureNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Separator());
 		mainUserCreateOfferPonctuelle.pack(new Label ("Kilomètres* :"));
 		mainUserCreateOfferPonctuelle.pack(kmNewOffer);
-		mainUserCreateOfferPonctuelle.pack(new Label ("Date* :"));
+		mainUserCreateOfferPonctuelle.pack(new Separator());
+		mainUserCreateOfferPonctuelle.pack(new Label ("Date (ex : 2018:09:28)* :"));
 		mainUserCreateOfferPonctuelle.pack(dateNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Separator());
 		mainUserCreateOfferPonctuelle.pack(new Label ("Départ depuis* :")); 
 		mainUserCreateOfferPonctuelle.pack(isFromNewOffer);
-		mainUserCreateOfferPonctuelle.pack(new Label ("Jour* :"));
+		mainUserCreateOfferPonctuelle.pack(new Separator());
+		mainUserCreateOfferPonctuelle.pack(new Label ("Jour (en minuscule)* :"));
 		mainUserCreateOfferPonctuelle.pack(jourNewOffer);
+		mainUserCreateOfferPonctuelle.pack(new Separator());
 		mainUserCreateOfferPonctuelle.pack(new Label ("Type* :")); 
 		mainUserCreateOfferPonctuelle.pack(typeNewOffer);
 		mainUserCreateOfferPonctuelle.pack(new Separator());
@@ -299,6 +303,7 @@ class Main extends Sprite {
 	function onClickCreateOfferPonctuelle(w : Control) {
 		var isFromRadioBox : String = null;
 		var typeRadioBox : String = null;
+		var km : Float = Std.parseFloat(this.kmNewOffer.value);
 
 		if (isFromNewOffer.selected == 0) {
 			isFromRadioBox = "false";
@@ -314,7 +319,7 @@ class Main extends Sprite {
 
 		var createOfferPonctuelle : POSTOffer = {
 			heure: this.heureNewOffer.value,
-			km: this.kmNewOffer.value, 
+			km: km, 
 			date: this.dateNewOffer.value,
 			isFrom: isFromRadioBox,
 			jour: this.jourNewOffer.value,
