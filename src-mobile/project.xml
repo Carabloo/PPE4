@@ -2,7 +2,7 @@
 <project>
 	
 	<window heigh="480" width="320" />
-	<meta title="TestUI" package="com.sample.testui" version="1.0.0" company="Company Name" />
+	<meta title="Application covoiturage" package="com.sample.testui" version="1.0.0" company="Company Name" />
 	<app main="Main" path="../export/mobile" file="TestUI" />
 	
 	<source path="Source" />
