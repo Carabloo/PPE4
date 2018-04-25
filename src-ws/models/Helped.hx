@@ -28,10 +28,10 @@ class Helped {
     var cookies : StringMap<String> = request.cookies;
     var login = cookies.get("login");
     var mdp = cookies.get("mdp");
-    var users : Array<User> = cast Lambda.array(User.manager.all());
+    var users = User.manager.all();
     var res : User = null;
-    for ( u in users ) {
-      if ( u.login == login && mdp == u.mdp) {
+    for (u in users) {
+      if (u.login == login && mdp == u.mdp) {
         res = u;
       }
     }

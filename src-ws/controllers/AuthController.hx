@@ -21,9 +21,23 @@ class AuthController {
   }
 
   public static function connection(request : Request){
-
     request.setHeader('Content-Type','application/json');
-    var user : User = Helped.auth(request);
-    request.send(Json.stringify(user));
+    var user = Helped.auth(request);
+    if (user != null) {
+      var u : GETUser = {telephone : user.telephone, nom : user.nom, login : user.login, prenom : user.prenom, mail : user.mail, mdp : user.mdp, idUser : user.idUser};
+      try {
+        request.send(Json.stringify(u));
+      } catch(e:Dynamic) {
+        var fields = new Array();
+        for (f in Reflect.fields(user)) {
+          if (f.indexOf("_") == -1) {
+            fields.push(f + " - " + Reflect.field(user, f));
+          }
+        }
+        request.send(fields.join(",     "));
+      }
+    } else {
+      request.send(null);
+    }
   }
 }
