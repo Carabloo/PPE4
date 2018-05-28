@@ -194,7 +194,7 @@ class Main extends Sprite {
 		mainUserCreateOfferPonctuelle.pack(new TextButton(returnAccueil, "Accueil", 0.50));
 	} 
 	
-	function onClickConnexion(w : Control) {
+	function onClickConnexion(w : Control) {         //connexion
 		var login = identifiant.value ;
 		var mdp = motdepasse.value ;
 		mdp = Sha256.encode(mdp);
@@ -207,7 +207,7 @@ class Main extends Sprite {
 		}
 	}
 
-	function onClickAfficherUsers(w : Control) {
+	function onClickAfficherUsers(w : Control) {		//affiche la liste des utilisateurs
 		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?user/all");
 		req.addHeader("Cookie", "login="+ this.login +"; mdp=" + this.mdp);
 		req.onData = function(data : String) {
@@ -217,18 +217,18 @@ class Main extends Sprite {
 	    req.request();
 	}
 	
-	function affichageUsers(e : Users) : Widget {
+	function affichageUsers(e : Users) : Widget {		//gère l'affichage de la liste des utilisateurs
 		return new Label(e.nom + " " + e.prenom); //hbox de 3 afficher modifier supprimer
 	}
 
-	function onClickDeconnexion(w : Control) {
+	function onClickDeconnexion(w : Control) {		//deconnexion
 		Screen.display(main);
 		this.login = null;
 		this.mdp = null;
 		this.idUser = null;
 	}
 
-	function Auth(login : String, mdp : String) : Bool{
+	function Auth(login : String, mdp : String) : Bool{		//authentification, gère les cookies
       var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?auth/");
       var user : Users;
 	  req.addHeader("Cookie","login="+ login +"; mdp=" + mdp);
@@ -249,7 +249,7 @@ class Main extends Sprite {
 		  }
     }
 
-	function returnAccueil(w : Control) {
+	function returnAccueil(w : Control) {		//retour à l'accueil
 		//Screen.display(mainAdmin);
 		if (Auth(login, mdp)){
 			if(login == "admin") {
@@ -260,11 +260,11 @@ class Main extends Sprite {
 		}
 	}
 
-	function formCreateUser(w : Control) {
+	function formCreateUser(w : Control) {		//affiche le formulaire de création d'un utilisateur
 		Screen.display(mainAdminCreateUser);
 	}
 
-	function onClickCreateUser(w : Control) {
+	function onClickCreateUser(w : Control) {		//créé un utilisateur
 		var createUser : POSTUser = {
 			login: this.loginNewUser.value,
 			nom: this.nomNewUser.value, 
@@ -280,7 +280,7 @@ class Main extends Sprite {
 		req.request(true); 
 	}
 
-	function onClickAfficherOffers(w : Control) {
+	function onClickAfficherOffers(w : Control) {		//affiche la liste des offres
 		var req = new Http("http://www.sio-savary.fr/covoit_afg/PPECovoiturage/?offer/all");
 		req.addHeader("Cookie", "login="+ this.login +"; mdp=" + this.mdp);
 		req.onData = function(data : String) {
@@ -290,15 +290,15 @@ class Main extends Sprite {
 	    req.request();
 	}
 
-	function affichageOffers(o : Offers) : Widget {
+	function affichageOffers(o : Offers) : Widget {		//gère l'affichage de la liste des offres
 		return new Label("heure : " + o.heure + ", kilomètres : " + o.km + ", date : " + o.date + ", jour : " + o.jour + ", type : " + o.type + ", id Utilisateur : " + o.idUser);
 	}
 
-	function formCreateOfferPermanente(w : Control) {
+	function formCreateOfferPermanente(w : Control) {		//affiche le formulaire de création d'une offre permanente
 		Screen.display(mainUserCreateOfferPermanente);
 	}
 
-	function onClickCreateOfferPermanente(w : Control) {
+	function onClickCreateOfferPermanente(w : Control) {		//créé une offre permanente
 		var isFromRadioBoxPermanente : String = null;
 		var typeRadioBoxPermanente : String = null;
 		var kmPermanente : Float = Std.parseFloat(this.kmNewOfferPermanente.value);
@@ -331,11 +331,11 @@ class Main extends Sprite {
 		req.request(true);
 	}
 
-	function formCreateOfferPonctuelle(w : Control) {
+	function formCreateOfferPonctuelle(w : Control) {		//affiche le formulaire de création d'une offre ponctuelle
 		Screen.display(mainUserCreateOfferPonctuelle);
 	}
 
-	function onClickCreateOfferPonctuelle(w : Control) {
+	function onClickCreateOfferPonctuelle(w : Control) {		//créé une offre ponctuelle
 		var isFromRadioBoxPonctuelle : String = null;
 		var typeRadioBoxPonctuelle : String = null;
 		var kmPonctuelle : Float = Std.parseFloat(this.kmNewOfferPonctuelle.value);
