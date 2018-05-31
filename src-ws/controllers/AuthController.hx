@@ -20,6 +20,7 @@ class AuthController {
     }
   }
 
+  //retourne user si les cookies sont bon
   public static function connection(request : Request){
     request.setHeader('Content-Type','application/json');
     var user = Helped.auth(request);

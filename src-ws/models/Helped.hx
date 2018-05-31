@@ -24,6 +24,7 @@ class Helped {
       return uid.toString().toLowerCase();
   }
 
+  // retourne l'utilisareur si le login et le mdp correspond
   public static function auth(request : Request) : User {
     var cookies : StringMap<String> = request.cookies;
     var login = cookies.get("login");
@@ -38,6 +39,7 @@ class Helped {
     return res;
   }
 
+  // retourne true si l'utilisateur est l'admin
   public static function admin(request : Request) : Bool {
     var res : Bool;
     var u : User = auth(request);
@@ -49,6 +51,7 @@ class Helped {
     return res;
   }
 
+  // retourne true les deux utilisateurs sont les mêmes
   public static function himself(request : Request, user : User) : Bool {
     var res : Bool = null;
     var u: User = auth(request);
@@ -60,6 +63,7 @@ class Helped {
     return res;
   }
 
+  // vérifie si le login existe dans la base de données
   public static function checkLogin(login : String) :  Bool {
     var res : Bool = true;
     var users : Array<User> = cast Lambda.array(User.manager.all());

@@ -75,11 +75,13 @@ class UserController {
     if ( Helped.admin(request) ) {
       var data : POSTUser = null;
       var u : User;
+      // vérification du type des variables envoyées
       try {
         data = request.data;
       } catch (e : Dynamic) {
         request.setReturnCode(400,'POSTUser type error');
       }
+      // vérification du login
       if (data.login == null || !Helped.checkLogin(data.login)){
         request.setReturnCode(400,'Bad login');
         return;
@@ -124,6 +126,7 @@ class UserController {
       request.setReturnCode(400,'PUTUser type error');
     }
     u = User.manager.get(idUser);
+    // Seulement l'admin ou l'utilisateur en question pour faire la modification
     if ( Helped.admin(request) || Helped.himself(request, u) ) {
       if (u == null){
         request.setReturnCode(404,'Eleve not found');

@@ -31,6 +31,7 @@ class OfferController {
 
   }
 
+  // retourne toutes les offres
   public static function retrieveAllOffer(request : Request){
     var offerInDB : Array<GETOffer> = cast Lambda.array(Offer.manager.all());
     request.setHeader('Content-Type','application/json');
@@ -58,6 +59,7 @@ class OfferController {
     request.send(res);
   }
 
+  // retourne une offre par rapport à idOffer
   public static function retrieveOneOffer(request : Request, idOffer : String){
     request.setHeader('Content-Type','application/json');
     var trajet : Offer;
@@ -71,6 +73,7 @@ class OfferController {
 
   public static function postOffer(request : Request, idOffer : String){
     var data : POSTOffer = null;
+    // vérification des types des variables envoyés
     try {
       data = request.data;
     } catch (e : Dynamic) {
